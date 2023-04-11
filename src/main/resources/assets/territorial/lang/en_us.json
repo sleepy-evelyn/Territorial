@@ -9,6 +9,7 @@
 
   "_comment": "Display messages",
   "text.territorial.overlay.exit_peeking_mode": "Press Alt to exit Peeking Mode",
+  "text.territorial.peeking_teleport_failed": "",
 
   "_comment": "Item Groups",
   "itemGroup.territorial.base_group": "Territorial",
