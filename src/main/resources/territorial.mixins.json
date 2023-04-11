@@ -1,0 +1,24 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.lunathelemon.territorial.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "common.AnvilChunkStorageAccessor",
+    "common.EnderEyeMixin",
+    "common.LightningEntityMixin",
+    "common.RuinedPortalStructurePieceMixin",
+    "common.ServerPlayerInteractionManagerMixin",
+    "common.StatusEffectInstanceMixin"
+  ],
+  "client": [
+    "client.ClientPlayNetworkHandlerMixin",
+    "client.InGameHudInvoker",
+    "client.PlayerEntityRenderMixin"
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

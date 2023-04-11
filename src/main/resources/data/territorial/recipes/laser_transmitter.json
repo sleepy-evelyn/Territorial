@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IIB",
+    "GRL",
+    "IIB"
+  ],
+  "key": {
+    "L": {
+      "item": "territorial:lens"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    },
+    "B": {
+      "item": "minecraft:blackstone"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "territorial:laser_transmitter",
+    "data": {
+      "$": "$ i5"
+    }
+  }
+}

@@ -1,35 +1,50 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "territorial",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Territorial",
+  "description": "TODO",
   "authors": [
-    "Me!"
+    "Lunathelemon"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "",
+    "sources": "https://github.com/lunathelemon/Territorial"
   },
 
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "license": "MIT",
+  "icon": "assets/territorial/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "io.github.lunathelemon.territorial.Territorial"
+    ],
+    "client": [
+      "io.github.lunathelemon.territorial.TerritorialClient"
+    ],
+    "modmenu": [
+      "io.github.lunathelemon.territorial.config.TMMIntegration"
+    ],
+    "cardinal-components": [
+      "io.github.lunathelemon.territorial.component.TerritorialComponents"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "territorial.mixins.json"
   ],
+
+  "custom": {
+    "cardinal-components": [
+      "territorial:peeking_eye"
+    ]
+  },
 
   "depends": {
     "fabricloader": ">=0.14.17",
     "fabric-api": "*",
-    "minecraft": "~1.19.4",
+    "minecraft": "~1.19.3",
     "java": ">=17"
   },
   "suggests": {

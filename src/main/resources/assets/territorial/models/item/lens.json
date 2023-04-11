@@ -1,0 +1,23 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "territorial:item/lenses/white_lens"
+  },
+  "overrides": [
+    { "predicate": { "colour": 0.0625 }, "model": "territorial:item/orange_lens" },
+    { "predicate": { "colour": 0.125 }, "model": "territorial:item/magenta_lens" },
+    { "predicate": { "colour": 0.1875 }, "model": "territorial:item/light_blue_lens" },
+    { "predicate": { "colour": 0.25 }, "model": "territorial:item/yellow_lens" },
+    { "predicate": { "colour": 0.3125 }, "model": "territorial:item/lime_lens" },
+    { "predicate": { "colour": 0.375 }, "model": "territorial:item/pink_lens" },
+    { "predicate": { "colour": 0.4375 }, "model": "territorial:item/gray_lens" },
+    { "predicate": { "colour": 0.5 }, "model": "territorial:item/light_gray_lens" },
+    { "predicate": { "colour": 0.5625 }, "model": "territorial:item/cyan_lens" },
+    { "predicate": { "colour": 0.625 }, "model": "territorial:item/purple_lens" },
+    { "predicate": { "colour": 0.6875 }, "model": "territorial:item/blue_lens" },
+    { "predicate": { "colour": 0.75 }, "model": "territorial:item/brown_lens" },
+    { "predicate": { "colour": 0.8125 }, "model": "territorial:item/green_lens" },
+    { "predicate": { "colour": 0.875 }, "model": "territorial:item/red_lens" },
+    { "predicate": { "colour": 0.9375 }, "model": "territorial:item/black_lens" }
+  ]
+}

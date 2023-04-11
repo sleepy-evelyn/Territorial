@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "magic_powered=false": { "model": "territorial:block/plinth_of_peeking" },
+    "magic_powered=true": { "model":  "territorial:block/plinth_of_peeking_active" }
+  }
+}
