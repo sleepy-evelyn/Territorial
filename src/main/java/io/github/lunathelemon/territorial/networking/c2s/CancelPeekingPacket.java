@@ -26,6 +26,12 @@ public class CancelPeekingPacket extends C2SPacket {
 
     @Override
     void execute(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-        player.getComponent(TerritorialComponents.PEEKING_EYE).setPeeking(false);
+        var peekingComponent = player.getComponent(TerritorialComponents.PEEKING_EYE);
+        var boundBlockEntity = peekingComponent.getBoundBlockEntity();
+
+        if(boundBlockEntity != null)
+            boundBlockEntity.removeBoundEntity(player);
+        else
+            peekingComponent.stopPeeking();
     }
 }

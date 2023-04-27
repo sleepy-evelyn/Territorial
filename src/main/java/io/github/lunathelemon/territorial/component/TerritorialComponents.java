@@ -16,6 +16,6 @@ public class TerritorialComponents implements EntityComponentInitializer {
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-        registry.registerForPlayers(PEEKING_EYE, PeekingEyeComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+        registry.registerForPlayers(PEEKING_EYE, PeekingEyeComponent::new, RespawnCopyStrategy.NEVER_COPY);
     }
 }

@@ -1,6 +1,7 @@
 package io.github.lunathelemon.territorial;
 
 import io.github.lunathelemon.territorial.client.render.entity.PeekingEyeRenderer;
+import io.github.lunathelemon.territorial.event.EventPlayground;
 import io.github.lunathelemon.territorial.event.client.HudRenderHandler;
 import io.github.lunathelemon.territorial.init.client.ItemPredicateRegistry;
 import io.github.lunathelemon.territorial.init.client.RenderRegistry;
@@ -14,5 +15,6 @@ public class TerritorialClient implements ClientModInitializer {
         ItemPredicateRegistry.register();
         HudRenderHandler.init();
         PeekingEyeRenderer.init();
+        EventPlayground.init();
     }
 }

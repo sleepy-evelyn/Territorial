@@ -8,7 +8,6 @@ import io.github.lunathelemon.territorial.util.MathUtils;
 import io.github.lunathelemon.territorial.util.TickCounter;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -36,12 +35,12 @@ import java.util.*;
 
 import static net.minecraft.util.math.Direction.UP;
 
-public class LaserTransmitterBlockEntity extends BlockEntity {
+public class LaserTransmitterBlockEntity extends TerritorialBlockEntity {
 
     public static final float[] SIGNAL_STRENGTH_WIDTHS = { 0.001f, 0.0015f, 0.0030f, 0.0045f, 0.0070f, 0.01f, 0.0135f, 0.02f, 0.025f, 0.035f, 0.06f, 0.1f, 0.16f, 0.25f, 0.38f };
-    private static final int MAX_ENTITIES_PER_BEAM_TICK = 30;
-    private static final int LIGHT_BLOCK_SPACING = 4;
-    private final TickCounter LIGHT_BLOCKS_TICKER;
+    private static final int maxEntitiesPerBeamTick = 30;
+    private static final int lightBlockSpacing = 4;
+    private final TickCounter lightBlocksTicker;
 
     private int strength, colour, maxReach, prevPower;
     private float sparkleDistance, reach, prevReach;
@@ -55,7 +54,7 @@ public class LaserTransmitterBlockEntity extends BlockEntity {
         super(TerritorialBlockEntities.LASER_BLOCK_ENTITY_TYPE, pos, state);
         prevPower = -1;
         maxReach = Territorial.getConfig().getLaserTransmitterMaxReach();
-        LIGHT_BLOCKS_TICKER = new TickCounter(6);
+        lightBlocksTicker = new TickCounter(6);
         mods.put("sparkle", false);
         mods.put("rainbow", false);
         mods.put("highlight", false);
@@ -75,8 +74,7 @@ public class LaserTransmitterBlockEntity extends BlockEntity {
                     "highlight", tag.getBoolean("highlight"),
                     "light", tag.getBoolean("light")
             ));
-            markDirty();
-            ((ServerWorld) world).getChunkManager().markForUpdate(pos);
+            markDirtyAndSync();
 
             boolean powered = false;
             if(tag.getBoolean("light")) powered = getCachedState().get(Properties.POWERED);
@@ -122,7 +120,7 @@ public class LaserTransmitterBlockEntity extends BlockEntity {
             be.prevPower = power;
             be.prevReach = be.reach;
         }
-        be.LIGHT_BLOCKS_TICKER.increment();
+        be.lightBlocksTicker.increment();
 
         List<Entity> entities = new ArrayList<>();
         if(be.startPos != null && be.endPos != null) {
@@ -158,7 +156,7 @@ public class LaserTransmitterBlockEntity extends BlockEntity {
                     }
                 }
                 entityCounter++;
-                if (entityCounter >= MAX_ENTITIES_PER_BEAM_TICK) break;
+                if (entityCounter >= maxEntitiesPerBeamTick) break;
             }
         } else { // Check for block collisions
             for (int i = 0; i < be.maxReach; i++) {
@@ -257,28 +255,28 @@ public class LaserTransmitterBlockEntity extends BlockEntity {
     }
 
     public void updateLightBlocks(boolean powered, Direction facing) {
-        if(LIGHT_BLOCKS_TICKER.test() || !powered) {
+        if(lightBlocksTicker.test() || !powered) {
             updateLights = false;
 
             if(world != null && !world.isClient) {
                 BlockState currentState;
                 BlockPos posIterator = pos.offset(facing, 1);
 
-                for(int i=0; i <= (maxReach/LIGHT_BLOCK_SPACING); i++) {
+                for(int i = 0; i <= (maxReach/ lightBlockSpacing); i++) {
                     currentState = world.getBlockState(posIterator);
 
                     if(powered) {
-                        if(i <= (int) reach/LIGHT_BLOCK_SPACING && currentState.isAir()) {
+                        if(i <= (int) reach/ lightBlockSpacing && currentState.isAir()) {
                             world.setBlockState(posIterator, Blocks.LIGHT.getDefaultState());
                         }
-                        else if(i > (int) reach/LIGHT_BLOCK_SPACING && currentState.equals(Blocks.LIGHT.getDefaultState())) {
+                        else if(i > (int) reach/ lightBlockSpacing && currentState.equals(Blocks.LIGHT.getDefaultState())) {
                             world.setBlockState(posIterator, Blocks.AIR.getDefaultState(), (1 << 1) | (1 << 4));
                         }
                     }
                     else if(currentState.equals(Blocks.LIGHT.getDefaultState())){
                         world.setBlockState(posIterator, Blocks.AIR.getDefaultState(), (1 << 1) | (1 << 4));
                     }
-                    posIterator = posIterator.offset(facing, LIGHT_BLOCK_SPACING);
+                    posIterator = posIterator.offset(facing, lightBlockSpacing);
                 }
             }
         }

@@ -22,10 +22,10 @@ public class PlinthOfPeekingBlockEntityRenderer implements BlockEntityRenderer<P
     @Override
     public void render(PlinthOfPeekingBlockEntity be, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         var clientInstance = MinecraftClient.getInstance();
-        var podiumStack = be.getPodiumStack();
+        var podiumEye = be.getPodiumEye();
         double offset;
 
-        if(!podiumStack.isEmpty()) {
+        if(podiumEye != null) {
             int levelMultiplier = be.getLevel() + 1;
 
             offset = Math.sin((be.getWorld().getTime() + tickDelta) / (32.0 / levelMultiplier)) / 16.0;
@@ -35,7 +35,7 @@ public class PlinthOfPeekingBlockEntityRenderer implements BlockEntityRenderer<P
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((be.getWorld().getTime() + tickDelta) * (levelMultiplier * 3)));
 
             int lightAbove = WorldRenderer.getLightmapCoordinates(be.getWorld(), be.getPos().up());
-            clientInstance.getItemRenderer().renderItem(podiumStack, ModelTransformationMode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, be.getWorld(), 0);
+            clientInstance.getItemRenderer().renderItem(podiumEye.getDefaultStack(), ModelTransformationMode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, be.getWorld(), 0);
             matrices.pop();
         }
     }

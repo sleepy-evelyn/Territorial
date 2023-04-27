@@ -9,8 +9,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.EnderEyeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -54,31 +54,29 @@ public class PlinthOfPeekingBlock extends BlockWithEntity {
         var mainHandStack = player.getMainHandStack();
 
         if(be instanceof PlinthOfPeekingBlockEntity ppbe) {
-            boolean hasEmptyPodium = ppbe.getPodiumStack().isEmpty();
+            boolean hasEmptyPodium = ppbe.getPodiumEye() == null;
             var peekingComponent = player.getComponent(TerritorialComponents.PEEKING_EYE);
 
             if(hasEmptyPodium) {
-                if(mainHandStack.getItem().equals(Items.ENDER_EYE)) {
-                    ppbe.setPodiumStack(mainHandStack);
+                if(mainHandStack.getItem() instanceof EnderEyeItem enderEyeItem) {
+                    ppbe.setPodiumEye(enderEyeItem);
+                    ppbe.markDirtyAndSync();
                     if (!player.getAbilities().creativeMode)
                         mainHandStack.decrement(1);
                 }
             } else {
                 if(player.isSneaking()) {
-                    dropStack(world, pos.up(), ppbe.getPodiumStack());
-                    ppbe.clearPodium();
+                    dropStack(world, pos.up(), ppbe.getPodiumEye().getDefaultStack());
+                    clearPodium(ppbe);
                 } else if(!peekingComponent.isPeeking()) {
                     ppbe.clearPodium();
                     if(!world.isClient)
-                        peekingComponent.setPeeking(true);
+                        ppbe.addBoundEntity(player);
                 }
             }
+            ppbe.markDirtyAndSync();
         }
         return ActionResult.PASS;
-    }
-
-    public void onFinishPeeking() {
-
     }
 
     @Override

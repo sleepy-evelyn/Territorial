@@ -2,6 +2,7 @@ package io.github.lunathelemon.territorial.mixin.common;
 
 import io.github.lunathelemon.territorial.access.StatusEffectInstanceAccess;
 import io.github.lunathelemon.territorial.util.NbtUtils;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.nbt.NbtCompound;
@@ -32,7 +33,7 @@ public abstract class StatusEffectInstanceMixin implements StatusEffectInstanceA
     @Inject(at = @At("HEAD"), method = "fromNbt(Lnet/minecraft/entity/effect/StatusEffect;Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/entity/effect/StatusEffectInstance;")
     private static void fromNbt(StatusEffect statusEffect, NbtCompound tag, CallbackInfoReturnable<StatusEffectInstance> ci) {
         if (tag.contains("last_pos_applied")) {
-            lastPosApplied = (BlockPos) NbtUtils.deserializeVec3i(tag.getIntArray("last_pos_applied"));
+            lastPosApplied = new BlockPos(NbtUtils.deserializeVec3i(tag.getIntArray("last_pos_applied")));
         }
     }
 }

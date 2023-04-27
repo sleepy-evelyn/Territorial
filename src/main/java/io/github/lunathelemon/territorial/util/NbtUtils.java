@@ -1,13 +1,18 @@
 package io.github.lunathelemon.territorial.util;
 
+import io.github.lunathelemon.territorial.api.component.BoundBlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryLoader;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class NbtUtils {
 
@@ -50,5 +55,19 @@ public class NbtUtils {
             nbtCompound.remove("z");
         }
         return nbtCompound;
+    }
+
+    public static void writeBoundBlockEntity(NbtCompound nbt, BoundBlockEntity bbe) {
+        nbt.putIntArray("boundPos", NbtUtils.serializeVec3i(bbe.getPos()));
+    }
+
+    @Nullable
+    public static BoundBlockEntity readBoundBlockEntity(NbtCompound nbt, World world) {
+        if(nbt.contains("boundPos")) {
+            var be = world.getBlockEntity(new BlockPos(NbtUtils.deserializeVec3i(nbt.getIntArray("boundPos"))));
+            if(be instanceof BoundBlockEntity bbe)
+                return bbe.matchesDimension(world) ? bbe : null;
+        }
+        return null;
     }
 }

@@ -1,12 +1,17 @@
 package io.github.lunathelemon.territorial.util;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 public class MovementUtils {
 
@@ -34,6 +39,29 @@ public class MovementUtils {
                     player.playSound(soundEvent, 1F, 1F);
                 }
                 break;
+            }
+        }
+    }
+
+    public static void moveToWorldAndTeleport(ServerPlayerEntity player, ServerWorld destination, BlockPos teleportLocation) {
+        if(player != null && !player.isRemoved()) {
+            var world = player.getWorld();
+            if(world != null) {
+                world.getProfiler().push("changeDimension");
+                player.detach();
+                var entity = player.getType().create(destination);
+                if(entity != null) {
+                    entity.copyFrom(player);
+                    world.getProfiler().push("reposition");
+                    entity.refreshPositionAndAngles(teleportLocation, player.getYaw(), player.getPitch());
+                    entity.setVelocity(Vec3d.ZERO);
+                    destination.onDimensionChanged(entity);
+                }
+                player.setRemoved(Entity.RemovalReason.CHANGED_DIMENSION);
+                world.getProfiler().pop();
+                world.resetIdleTimeout();
+                destination.resetIdleTimeout();
+                world.getProfiler().pop();
             }
         }
     }

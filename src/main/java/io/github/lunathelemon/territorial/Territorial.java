@@ -4,6 +4,7 @@ import io.github.lunathelemon.territorial.block.TerritorialBlocks;
 import io.github.lunathelemon.territorial.block.entity.TerritorialBlockEntities;
 import io.github.lunathelemon.territorial.config.TerritorialConfig;
 import io.github.lunathelemon.territorial.entity.effect.TerritorialStatusEffects;
+import io.github.lunathelemon.territorial.event.EventPlayground;
 import io.github.lunathelemon.territorial.init.C2SPacketRegistry;
 import io.github.lunathelemon.territorial.init.ItemGroupRegistry;
 import io.github.lunathelemon.territorial.item.TerritorialItems;

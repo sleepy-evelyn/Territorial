@@ -25,6 +25,9 @@ public class TerritorialConfig implements ConfigData {
     @ConfigEntry.BoundedDiscrete(min = 1, max = 60)
     int laserTransmitterMaxReach = 48;
 
+    @Comment("Minimum reach of a Plinth of peeking without a pyramid formation")
+    int plinthOfPeekingMinReach = 20;
+
     @Comment("Whether the laser targets all mobs or just players")
     boolean laserTargetsAllMobs = false;
 
@@ -50,4 +53,5 @@ public class TerritorialConfig implements ConfigData {
     public boolean laserTargetsAllMobs() { return laserTargetsAllMobs; }
     public int getEclipseRoseMaxReach() { return (int) getWithinBounds("eclipseRoseMaxReach", eclipseRoseMaxReach, 8, 1, 16); }
     public int getLaserTransmitterMaxReach() { return (int) getWithinBounds("laserTransmitterMaxReach", laserTransmitterMaxReach, 48, 1, 60); }
+    public int getPlinthOfPeekingMinReach() { return plinthOfPeekingMinReach; }
 }
