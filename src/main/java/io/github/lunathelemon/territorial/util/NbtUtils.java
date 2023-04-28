@@ -49,13 +49,13 @@ public class NbtUtils {
         return T.valueOf(enumClass, enumNbtString);
     }
 
-    public static NbtCompound removeBlockFeatures(NbtCompound nbtCompound) {
-        if(nbtCompound != null) {
-            nbtCompound.remove("id");
-            nbtCompound.remove("x");
-            nbtCompound.remove("y");
-            nbtCompound.remove("z");
+    public static NbtCompound removeBlockFeatures(NbtCompound nbt) {
+        if(nbt != null) {
+            nbt.remove("id");
+            nbt.remove("x");
+            nbt.remove("y");
+            nbt.remove("z");
         }
-        return nbtCompound;
+        return nbt;
     }
 }

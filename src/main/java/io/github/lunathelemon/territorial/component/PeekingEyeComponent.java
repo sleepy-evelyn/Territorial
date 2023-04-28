@@ -63,9 +63,8 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
     public void stopPeeking() {
         provider.dropItem(getItemToDrop());
         teleportToStartingPos();
-        if(getBoundBlockEntity() instanceof BoundBlockEntity bbe) {
+        if(getBoundBlockEntity() instanceof BoundBlockEntity bbe)
             bbe.removeBoundEntity(provider);
-        }
         reset(false);
         TerritorialComponents.PEEKING_EYE.sync(provider);
     }
@@ -204,8 +203,6 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
                         return beInWorld;
                 }
             }
-            // A block entity no longer exists here so reset everything, something broke, or the world was removed.
-            reset(false);
         }
         return null;
     }

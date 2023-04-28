@@ -17,12 +17,12 @@ import net.minecraft.world.World;
 
 public class LensRecipe extends SpecialCraftingRecipe {
 
-    private static final Ingredient SPARKLE_MODIFIER;
-    private static final Ingredient RAINBOW_MODIFIER;
-    private static final Ingredient HIGHLIGHT_MODIFIER;
-    private static final Ingredient DEATH_MODIFIER;
-    private static final Ingredient LIGHT_MODIFIER;
-    private static final Ingredient SRENGTH_MODIFIER;
+    private static final Ingredient sparkleModifier;
+    private static final Ingredient rainbowModifier;
+    private static final Ingredient highlightModifier;
+    private static final Ingredient deathModifier;
+    private static final Ingredient lightModifier;
+    private static final Ingredient strengthModifier;
 
     public LensRecipe(Identifier id) {
         super(id, CraftingRecipeCategory.MISC);
@@ -42,27 +42,27 @@ public class LensRecipe extends SpecialCraftingRecipe {
             ItemStack itemStack = inventory.getStack(i);
 
             if(!itemStack.isEmpty()) {
-                if(SPARKLE_MODIFIER.test(itemStack)) {
+                if(sparkleModifier.test(itemStack)) {
                     if(sparkleMod) return false;
                     sparkleMod = true;
                 }
-                else if(RAINBOW_MODIFIER.test(itemStack)) {
+                else if(rainbowModifier.test(itemStack)) {
                     if(rainbowMod) return false;
                     rainbowMod = true;
                 }
-                else if(HIGHLIGHT_MODIFIER.test(itemStack)) {
+                else if(highlightModifier.test(itemStack)) {
                     if(highlightMod) return false;
                     highlightMod = true;
                 }
-                else if(DEATH_MODIFIER.test(itemStack)) {
+                else if(deathModifier.test(itemStack)) {
                     if(deathMod) return false;
                     deathMod = true;
                 }
-                else if(LIGHT_MODIFIER.test(itemStack)) {
+                else if(lightModifier.test(itemStack)) {
                     if(lightMod) return false;
                     lightMod = true;
                 }
-                else if(SRENGTH_MODIFIER.test(itemStack)) {
+                else if(strengthModifier.test(itemStack)) {
                     if(strengthMod > 3) return false;
                     strengthMod++;
                 }
@@ -85,22 +85,22 @@ public class LensRecipe extends SpecialCraftingRecipe {
         for(int i=0; i < inventory.size(); i++) {
             ItemStack invItemStack = inventory.getStack(i);
             if(!invItemStack.isEmpty()) {
-                if(SPARKLE_MODIFIER.test(invItemStack)) {
+                if(sparkleModifier.test(invItemStack)) {
                     compound.putBoolean("sparkle", true);
                 }
-                else if(RAINBOW_MODIFIER.test(invItemStack)) {
+                else if(rainbowModifier.test(invItemStack)) {
                     compound.putBoolean("rainbow", true);
                 }
-                else if(HIGHLIGHT_MODIFIER.test(invItemStack)) {
+                else if(highlightModifier.test(invItemStack)) {
                     compound.putBoolean("highlight", true);
                 }
-                else if(DEATH_MODIFIER.test(invItemStack)) {
+                else if(deathModifier.test(invItemStack)) {
                     compound.putBoolean("death", true);
                 }
-                else if(LIGHT_MODIFIER.test(invItemStack)) {
+                else if(lightModifier.test(invItemStack)) {
                     compound.putBoolean("light", true);
                 }
-                else if(SRENGTH_MODIFIER.test(invItemStack)) {
+                else if(strengthModifier.test(invItemStack)) {
                     strengthMod++;
                 } else if (invItemStack.getItem() instanceof DyeItem) {
                     colourId = ((DyeItem) invItemStack.getItem()).getColor().getId();
@@ -128,11 +128,11 @@ public class LensRecipe extends SpecialCraftingRecipe {
     }
 
     static {
-        SPARKLE_MODIFIER = Ingredient.ofItems(Items.EMERALD);
-        RAINBOW_MODIFIER = Ingredient.ofItems(Items.DIAMOND);
-        HIGHLIGHT_MODIFIER = Ingredient.ofItems(Items.GLOW_INK_SAC);
-        DEATH_MODIFIER = Ingredient.ofItems(Items.NETHER_STAR);
-        LIGHT_MODIFIER = Ingredient.ofItems(Items.GLOW_BERRIES);
-        SRENGTH_MODIFIER = Ingredient.ofItems(Items.AMETHYST_SHARD);
+        sparkleModifier = Ingredient.ofItems(Items.EMERALD);
+        rainbowModifier = Ingredient.ofItems(Items.DIAMOND);
+        highlightModifier = Ingredient.ofItems(Items.GLOW_INK_SAC);
+        deathModifier = Ingredient.ofItems(Items.NETHER_STAR);
+        lightModifier = Ingredient.ofItems(Items.GLOW_BERRIES);
+        strengthModifier = Ingredient.ofItems(Items.AMETHYST_SHARD);
     }
 }

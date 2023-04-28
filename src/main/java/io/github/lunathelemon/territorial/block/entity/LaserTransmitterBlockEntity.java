@@ -5,6 +5,7 @@ import io.github.lunathelemon.territorial.block.TerritorialBlocks;
 import io.github.lunathelemon.territorial.init.TerritorialDamageTypes;
 import io.github.lunathelemon.territorial.mixin.common.AnvilChunkStorageAccessor;
 import io.github.lunathelemon.territorial.util.MathUtils;
+import io.github.lunathelemon.territorial.util.NbtUtils;
 import io.github.lunathelemon.territorial.util.NetworkingUtils;
 import io.github.lunathelemon.territorial.util.TickCounter;
 import net.minecraft.block.BlockState;
@@ -91,12 +92,7 @@ public class LaserTransmitterBlockEntity extends BlockEntity {
         // Remove block identifying features
         NbtCompound beamSubTag = stack.getSubNbt("beam");
         if(beamSubTag != null) {
-            // TODO - Switch to NbtUtils.removeBlockFeatures() soon
-            beamSubTag.remove("id");
-            beamSubTag.remove("x");
-            beamSubTag.remove("y");
-            beamSubTag.remove("z");
-
+            beamSubTag = NbtUtils.removeBlockFeatures(beamSubTag);
             beamSubTag.remove("max_reach");
         }
         return stack;

@@ -1,7 +1,5 @@
 package io.github.lunathelemon.territorial.block;
 
-import io.github.lunathelemon.territorial.api.component.IPeekingEyeComponent;
-import io.github.lunathelemon.territorial.block.entity.LaserTransmitterBlockEntity;
 import io.github.lunathelemon.territorial.block.entity.PlinthOfPeekingBlockEntity;
 import io.github.lunathelemon.territorial.block.entity.TerritorialBlockEntities;
 import io.github.lunathelemon.territorial.component.TerritorialComponents;
@@ -14,6 +12,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnderEyeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -27,8 +26,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class PlinthOfPeekingBlock extends BlockWithEntity {
 
@@ -57,7 +54,7 @@ public class PlinthOfPeekingBlock extends BlockWithEntity {
         var mainHandStack = player.getMainHandStack();
 
         if(be instanceof PlinthOfPeekingBlockEntity ppbe && !world.isClient) {
-            boolean hasEmptyPodium = ppbe.getPodiumEye() == null;
+            boolean hasEmptyPodium = ppbe.getPodiumEye() == Items.AIR;
             var peekingComponent = player.getComponent(TerritorialComponents.PEEKING_EYE);
 
             if(hasEmptyPodium) {
@@ -69,9 +66,9 @@ public class PlinthOfPeekingBlock extends BlockWithEntity {
             } else {
                 if(player.isSneaking()) {
                     dropStack(world, pos.up(), ppbe.getPodiumEye().getDefaultStack());
-                    ppbe.clearPodium();
+                    ppbe.setPodiumEye(Items.AIR);
                 } else if(!peekingComponent.isPeeking()) {
-                    ppbe.clearPodium();
+                    ppbe.setPodiumEye(Items.AIR);
                     peekingComponent.startPeeking(ppbe);
                 }
             }

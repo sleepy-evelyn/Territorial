@@ -7,11 +7,14 @@ import io.github.lunathelemon.territorial.api.component.IPeekingEyeComponent;
 import io.github.lunathelemon.territorial.block.TerritorialBlocks;
 import io.github.lunathelemon.territorial.component.TerritorialComponents;
 import net.fabricmc.fabric.api.util.NbtType;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnderEyeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.*;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -30,20 +33,23 @@ import java.util.*;
 public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBlockEntity {
 
     private static final int[] reachMultipliers = { 1, 3, 8, 16, 27 };
+    private static final Set<Item> acceptedPodiumItems = Set.of(Items.ENDER_EYE);
 
     private int level;
-    @Nullable private EnderEyeItem podiumItem;
+    private Item podiumItem;
     private final HashSet<UUID> boundPlayerUuids;
 
     public PlinthOfPeekingBlockEntity(BlockPos pos, BlockState state) {
         super(TerritorialBlockEntities.PLINTH_OF_PEEKING_BLOCK_ENTITY_TYPE, pos, state);
         boundPlayerUuids = new HashSet<>();
+        podiumItem = Items.ENDER_EYE;
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, PlinthOfPeekingBlockEntity be) {
         if(world.getTime() % 80 == 0) {
             int newLevel = be.updateLevel(world, pos);
 
+            // Level has changed
             if(newLevel != be.level) {
                 world.setBlockState(pos, state.with(Properties.ENABLED, newLevel > 0));
                 be.getBoundPlayerComponents().forEach(peekingComponent -> peekingComponent.rebind(be));
@@ -85,10 +91,7 @@ public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBloc
     protected void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         nbt.putInt("level", level);
-        if(podiumItem != null)
-            nbt.putString("podiumItem", Registries.ITEM.getId(podiumItem).toString());
-        else
-            nbt.putString("podiumItem", "");
+        nbt.putString("podiumItem", Registries.ITEM.getId(podiumItem).toString());
 
         var uuidList = new NbtList();
         for(var boundUuid : boundPlayerUuids)
@@ -101,17 +104,8 @@ public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBloc
         super.readNbt(nbt);
         if(nbt.contains("level"))
             level = nbt.getInt("level");
-        if(nbt.contains("podiumItem")) {
-            var itemString = nbt.getString("podiumItem");
-
-            if(itemString.isEmpty())
-                this.podiumItem = null;
-            else {
-                var item = Registries.ITEM.get(new Identifier(itemString));
-                if(item instanceof EnderEyeItem enderEyeItem)
-                    this.podiumItem = enderEyeItem;
-            }
-        }
+        if(nbt.contains("podiumItem"))
+            this.podiumItem = Registries.ITEM.get(new Identifier(nbt.getString("podiumItem")));
         if(nbt.contains("boundPlayers")) {
             NbtList boundPlayersNbtList = nbt.getList("boundPlayers", NbtElement.INT_ARRAY_TYPE);
             for(var boundUuidIntArray : boundPlayersNbtList)
@@ -130,10 +124,8 @@ public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBloc
         return createNbt();
     }
 
-    @Nullable
-    public EnderEyeItem getPodiumEye() { return podiumItem; }
-    public void setPodiumEye(EnderEyeItem podiumItem) { this.podiumItem = podiumItem; }
-    public void clearPodium() { this.podiumItem = null; }
+    public Item getPodiumEye() { return podiumItem; }
+    public void setPodiumEye(Item podiumItem) { this.podiumItem = podiumItem; }
     public int getLevel() { return level; }
 
     @Override
