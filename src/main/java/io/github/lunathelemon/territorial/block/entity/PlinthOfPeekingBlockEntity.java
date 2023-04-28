@@ -2,10 +2,13 @@ package io.github.lunathelemon.territorial.block.entity;
 
 import io.github.lunathelemon.territorial.Territorial;
 import io.github.lunathelemon.territorial.api.component.BoundBlockEntity;
+import io.github.lunathelemon.territorial.api.component.BoundBlockEntityParams;
+import io.github.lunathelemon.territorial.api.component.IPeekingEyeComponent;
 import io.github.lunathelemon.territorial.block.TerritorialBlocks;
 import io.github.lunathelemon.territorial.component.TerritorialComponents;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnderEyeItem;
@@ -24,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class PlinthOfPeekingBlockEntity extends TerritorialBlockEntity implements BoundBlockEntity {
+public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBlockEntity {
 
     private static final int[] reachMultipliers = { 1, 3, 8, 16, 27 };
 
@@ -41,31 +44,11 @@ public class PlinthOfPeekingBlockEntity extends TerritorialBlockEntity implement
         if(world.getTime() % 80 == 0) {
             int newLevel = be.updateLevel(world, pos);
 
-            if(newLevel != be.level)
+            if(newLevel != be.level) {
                 world.setBlockState(pos, state.with(Properties.ENABLED, newLevel > 0));
-            be.level = newLevel;
-
-            var reach = Territorial.getConfig().getPlinthOfPeekingMinReach() * reachMultipliers[be.level];
-            var bbeDimensionId = world.getDimensionKey().getValue();
-
-            for(var boundPlayerUuid : be.boundPlayerUuids) {
-                var boundPlayer = world.getPlayerByUuid(boundPlayerUuid);
-                if(boundPlayer != null) {
-                    var boundComponent = boundPlayer.getComponent(TerritorialComponents.PEEKING_EYE);
-                    if(boundComponent.isPeeking()) {
-                        if(world.getDimensionKey() != null) {
-                            var playerDimensionId = boundPlayer.world.getDimensionKey().getValue();
-                            var distanceToBlockEntity = (float) Math.sqrt(pos.getSquaredDistance(boundPlayer.getPos()));
-
-                            // Stop peeking if the player has switched dimension or is out of reach
-                            if (!bbeDimensionId.equals(playerDimensionId) || distanceToBlockEntity > reach) {
-                                be.removeBoundEntity(boundPlayer);
-                                be.markDirtyAndSync();
-                            }
-                        }
-                    }
-                }
+                be.getBoundPlayerComponents().forEach(peekingComponent -> peekingComponent.rebind(be));
             }
+            be.level = newLevel;
         }
     }
 
@@ -104,6 +87,8 @@ public class PlinthOfPeekingBlockEntity extends TerritorialBlockEntity implement
         nbt.putInt("level", level);
         if(podiumItem != null)
             nbt.putString("podiumItem", Registries.ITEM.getId(podiumItem).toString());
+        else
+            nbt.putString("podiumItem", "");
 
         var uuidList = new NbtList();
         for(var boundUuid : boundPlayerUuids)
@@ -117,9 +102,15 @@ public class PlinthOfPeekingBlockEntity extends TerritorialBlockEntity implement
         if(nbt.contains("level"))
             level = nbt.getInt("level");
         if(nbt.contains("podiumItem")) {
-            var item = Registries.ITEM.get(new Identifier(nbt.getString("podiumItem")));
-            if(item instanceof EnderEyeItem enderEyeItem)
-                this.podiumItem = enderEyeItem;
+            var itemString = nbt.getString("podiumItem");
+
+            if(itemString.isEmpty())
+                this.podiumItem = null;
+            else {
+                var item = Registries.ITEM.get(new Identifier(itemString));
+                if(item instanceof EnderEyeItem enderEyeItem)
+                    this.podiumItem = enderEyeItem;
+            }
         }
         if(nbt.contains("boundPlayers")) {
             NbtList boundPlayersNbtList = nbt.getList("boundPlayers", NbtElement.INT_ARRAY_TYPE);
@@ -147,20 +138,39 @@ public class PlinthOfPeekingBlockEntity extends TerritorialBlockEntity implement
 
     @Override
     public void addBoundEntity(Entity boundEntity) {
-        if(boundEntity instanceof PlayerEntity playerEntity) {
-            if(boundPlayerUuids.add(playerEntity.getUuid())) {
-                var peekingComponent = playerEntity.getComponent(TerritorialComponents.PEEKING_EYE);
-                peekingComponent.startPeeking(this);
-            }
-        }
+        if(boundEntity instanceof PlayerEntity playerEntity)
+            boundPlayerUuids.add(playerEntity.getUuid());
     }
 
     @Override
     public void removeBoundEntity(Entity boundEntity) {
         if(boundEntity instanceof PlayerEntity playerEntity)
-            if(boundPlayerUuids.remove(playerEntity.getUuid())) {
-                var peekingComponent = playerEntity.getComponent(TerritorialComponents.PEEKING_EYE);
-                peekingComponent.stopPeeking();
+            boundPlayerUuids.remove(playerEntity.getUuid());
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        getBoundPlayerComponents().forEach(IPeekingEyeComponent::stopPeeking);
+    }
+
+    @Override
+    public BoundBlockEntityParams getParams() {
+        if(world != null)
+            return new BoundBlockEntityParams(world.getDimensionKey(), pos,
+                    Territorial.getConfig().getPlinthOfPeekingMinReach() * reachMultipliers[level]);
+        else return null;
+    }
+
+    private List<IPeekingEyeComponent> getBoundPlayerComponents() {
+        List<IPeekingEyeComponent> components = new ArrayList<>();
+
+        if(world != null) {
+            for(var boundPlayerUuid : boundPlayerUuids) {
+                var boundPlayer = world.getPlayerByUuid(boundPlayerUuid);
+                if(boundPlayer != null)
+                    components.add(boundPlayer.getComponent(TerritorialComponents.PEEKING_EYE));
             }
+        }
+        return components;
     }
 }

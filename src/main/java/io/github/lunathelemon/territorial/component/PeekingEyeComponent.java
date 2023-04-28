@@ -1,15 +1,17 @@
 package io.github.lunathelemon.territorial.component;
 
-import io.github.lunathelemon.territorial.Territorial;
 import io.github.lunathelemon.territorial.api.component.BoundBlockEntity;
+import io.github.lunathelemon.territorial.api.component.BoundBlockEntityParams;
 import io.github.lunathelemon.territorial.api.component.IPeekingEyeComponent;
 import io.github.lunathelemon.territorial.client.sound.PeekingSoundInstance;
 import io.github.lunathelemon.territorial.init.TerritorialDamageTypes;
 import io.github.lunathelemon.territorial.util.NbtUtils;
+import io.github.lunathelemon.territorial.util.NetworkingUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.RunArgs;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -30,8 +32,9 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
     private boolean isPeeking;
     private int ticksPeeking;
     @Nullable private RegistryKey<DimensionType> startingDimensionKey;
-    @Nullable private BlockPos startingPos, boundPos;
+    @Nullable private BlockPos startingPos;
 
+    @Nullable private BoundBlockEntityParams bbeParams;
     @Nullable private PeekingSoundInstance soundInstance;
     private final PlayerEntity provider;
 
@@ -45,12 +48,14 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
     }
 
     @Override
-    public void startPeeking(@Nullable BoundBlockEntity boundBlockEntity) {
+    public void startPeeking(@Nullable BoundBlockEntity bbe) {
         this.startingDimensionKey = provider.getWorld().getDimensionKey();
         this.startingPos = provider.getBlockPos();
         this.isPeeking = true;
-        if(boundBlockEntity != null)
-            boundPos = boundBlockEntity.getPos();
+        if(bbe != null) {
+            bbeParams = bbe.getParams();
+            bbe.addBoundEntity(provider);
+        }
         TerritorialComponents.PEEKING_EYE.sync(provider);
     }
 
@@ -58,6 +63,9 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
     public void stopPeeking() {
         provider.dropItem(getItemToDrop());
         teleportToStartingPos();
+        if(getBoundBlockEntity() instanceof BoundBlockEntity bbe) {
+            bbe.removeBoundEntity(provider);
+        }
         reset(false);
         TerritorialComponents.PEEKING_EYE.sync(provider);
     }
@@ -106,6 +114,26 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
             reset(true);
     }
 
+    @Override
+    public void serverTick() {
+        if(isPeeking) {
+            if(provider.world.getDimensionKey() != null && bbeParams != null) {
+                var playerDimensionId = provider.world.getDimensionKey().getValue();
+                var bbeDimensionId = bbeParams.dimensionKey().getValue();
+                var distanceToBlockEntity = (float) Math.sqrt(provider.getBlockPos().getSquaredDistance(bbeParams.pos()));
+
+                // Stop peeking if the player has switched dimension or is out of reach
+                if (!bbeDimensionId.equals(playerDimensionId) || distanceToBlockEntity > bbeParams.reach()) {
+                    var bbe = getBoundBlockEntity();
+                    if(bbe != null) {
+                        stopPeeking();
+                        NetworkingUtils.markDirtyAndSync(bbe, provider.world);
+                    }
+                }
+            }
+        }
+    }
+
     private void reset(boolean isClient) {
         if(isClient) {
             ticksPeeking = 0;
@@ -113,7 +141,7 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
         } else
             this.startingPos = null;
         this.startingDimensionKey = null;
-        this.boundPos = null;
+        this.bbeParams = null;
         this.isPeeking = false;
     }
 
@@ -130,8 +158,14 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
             startingDimensionKey = RegistryKey.of(RegistryKeys.DIMENSION_TYPE, new Identifier(nbt.getString("startingDimensionKey")));
         if(nbt.contains("startingPos"))
             startingPos = new BlockPos(NbtUtils.deserializeVec3i(nbt.getIntArray("startingPos")));
-        if(nbt.contains("boundPos"))
-            boundPos = new BlockPos(NbtUtils.deserializeVec3i(nbt.getIntArray("boundPos")));
+        if(nbt.contains("boundBlockEntity")) {
+            var bbeNbt = nbt.getCompound("boundBlockEntity");
+            bbeParams = new BoundBlockEntityParams(
+                    RegistryKey.of(RegistryKeys.DIMENSION_TYPE, new Identifier(nbt.getString("dimensionKey"))),
+                            new BlockPos(NbtUtils.deserializeVec3i(bbeNbt.getIntArray("pos"))),
+                            bbeNbt.getInt("reach")
+            );
+        }
     }
 
     @Override
@@ -141,29 +175,33 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
             nbt.putString("startingDimensionKey", startingDimensionKey.getValue().toString());
         if(startingPos != null)
             nbt.putIntArray("startingPos", NbtUtils.serializeVec3i(startingPos));
-        if(boundPos != null)
-            nbt.putIntArray("boundPos", NbtUtils.serializeVec3i(boundPos));
+        if(bbeParams != null) {
+            var bbeNbt = new NbtCompound();
+            bbeNbt.putString("dimensionKey", bbeParams.dimensionKey().getValue().toString());
+            bbeNbt.putIntArray("pos", NbtUtils.serializeVec3i(bbeParams.pos()));
+            bbeNbt.putInt("reach", bbeParams.reach());
+            nbt.put("boundBlockEntity", bbeNbt);
+        }
     }
 
-    @Override public boolean shouldSyncWith(ServerPlayerEntity player) { return player == this.provider; }
     @Override public boolean isPeeking() { return isPeeking; }
     @Override public int getTicksPeeking() { return ticksPeeking; }
 
     @Override
-    public PlayerEntity getProvider() {
-        return provider;
+    public void rebind(BoundBlockEntity bbe) {
+        bbeParams = bbe.getParams();
     }
 
     @Override
-    public @Nullable BoundBlockEntity getBoundBlockEntity() {
+    public @Nullable BlockEntity getBoundBlockEntity() {
         var server = provider.getServer();
-        if(server != null && startingDimensionKey != null && boundPos != null) {
+        if(server != null && startingDimensionKey != null && bbeParams != null) {
             for(var world : server.getWorlds()) {
                 if(world.getDimensionKey().getValue().equals(startingDimensionKey.getValue())) {
-                    var beInWorld = world.getBlockEntity(boundPos);
+                    var beInWorld = world.getBlockEntity(bbeParams.pos());
                     // Check the block entity exists within the world
-                    if(beInWorld instanceof BoundBlockEntity bbe)
-                        return bbe;
+                    if(beInWorld instanceof BoundBlockEntity)
+                        return beInWorld;
                 }
             }
             // A block entity no longer exists here so reset everything, something broke, or the world was removed.

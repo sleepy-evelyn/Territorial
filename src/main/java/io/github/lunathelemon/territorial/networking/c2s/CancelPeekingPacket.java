@@ -2,6 +2,7 @@ package io.github.lunathelemon.territorial.networking.c2s;
 
 import io.github.lunathelemon.territorial.Territorial;
 import io.github.lunathelemon.territorial.component.TerritorialComponents;
+import io.github.lunathelemon.territorial.util.NetworkingUtils;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
@@ -27,11 +28,10 @@ public class CancelPeekingPacket extends C2SPacket {
     @Override
     void execute(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
         var peekingComponent = player.getComponent(TerritorialComponents.PEEKING_EYE);
-        var boundBlockEntity = peekingComponent.getBoundBlockEntity();
+        var be = peekingComponent.getBoundBlockEntity();
 
-        if(boundBlockEntity != null)
-            boundBlockEntity.removeBoundEntity(player);
-        else
-            peekingComponent.stopPeeking();
+        peekingComponent.stopPeeking();
+        if(be != null)
+            NetworkingUtils.markDirtyAndSync(be, player.world);
     }
 }

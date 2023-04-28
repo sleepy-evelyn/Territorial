@@ -48,10 +48,10 @@ public class PeekingSoundInstance extends MovingSoundInstance {
         this.z = player.getZ();
         this.volume = 0;
 
-        float screamBorder = (bbe.getReach() < 100) ? 5 : 10;
+        /*float screamBorder = (bbe.getReach() < 100) ? 5 : 10;
         float distanceToBlockEntity = PeekingEyeComponent.getDistanceToBoundBE(player, bbe);
 
         if(bbe.getReach() - screamBorder < distanceToBlockEntity)
-            this.volume = (distanceToBlockEntity - (bbe.getReach() - screamBorder)) / screamBorder;
+            this.volume = (distanceToBlockEntity - (bbe.getReach() - screamBorder)) / screamBorder; */
     }
 }

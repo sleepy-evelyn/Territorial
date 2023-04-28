@@ -5,9 +5,11 @@ import io.github.lunathelemon.territorial.block.TerritorialBlocks;
 import io.github.lunathelemon.territorial.init.TerritorialDamageTypes;
 import io.github.lunathelemon.territorial.mixin.common.AnvilChunkStorageAccessor;
 import io.github.lunathelemon.territorial.util.MathUtils;
+import io.github.lunathelemon.territorial.util.NetworkingUtils;
 import io.github.lunathelemon.territorial.util.TickCounter;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -35,7 +37,7 @@ import java.util.*;
 
 import static net.minecraft.util.math.Direction.UP;
 
-public class LaserTransmitterBlockEntity extends TerritorialBlockEntity {
+public class LaserTransmitterBlockEntity extends BlockEntity {
 
     public static final float[] SIGNAL_STRENGTH_WIDTHS = { 0.001f, 0.0015f, 0.0030f, 0.0045f, 0.0070f, 0.01f, 0.0135f, 0.02f, 0.025f, 0.035f, 0.06f, 0.1f, 0.16f, 0.25f, 0.38f };
     private static final int maxEntitiesPerBeamTick = 30;
@@ -74,7 +76,8 @@ public class LaserTransmitterBlockEntity extends TerritorialBlockEntity {
                     "highlight", tag.getBoolean("highlight"),
                     "light", tag.getBoolean("light")
             ));
-            markDirtyAndSync();
+            assert world != null;
+            NetworkingUtils.markDirtyAndSync(this, world);
 
             boolean powered = false;
             if(tag.getBoolean("light")) powered = getCachedState().get(Properties.POWERED);

@@ -1,7 +1,7 @@
 package io.github.lunathelemon.territorial.api.component;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
 public interface BoundBlockEntity {
 
@@ -9,5 +9,7 @@ public interface BoundBlockEntity {
 
     void removeBoundEntity(Entity boundEntity);
 
-    BlockPos getPos();
+    void onBlockDestroyed();
+
+    @Nullable BoundBlockEntityParams getParams();
 }

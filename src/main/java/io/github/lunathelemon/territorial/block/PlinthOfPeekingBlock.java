@@ -1,8 +1,11 @@
 package io.github.lunathelemon.territorial.block;
 
+import io.github.lunathelemon.territorial.api.component.IPeekingEyeComponent;
+import io.github.lunathelemon.territorial.block.entity.LaserTransmitterBlockEntity;
 import io.github.lunathelemon.territorial.block.entity.PlinthOfPeekingBlockEntity;
 import io.github.lunathelemon.territorial.block.entity.TerritorialBlockEntities;
 import io.github.lunathelemon.territorial.component.TerritorialComponents;
+import io.github.lunathelemon.territorial.util.NetworkingUtils;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -53,30 +56,39 @@ public class PlinthOfPeekingBlock extends BlockWithEntity {
         var be = world.getBlockEntity(pos);
         var mainHandStack = player.getMainHandStack();
 
-        if(be instanceof PlinthOfPeekingBlockEntity ppbe) {
+        if(be instanceof PlinthOfPeekingBlockEntity ppbe && !world.isClient) {
             boolean hasEmptyPodium = ppbe.getPodiumEye() == null;
             var peekingComponent = player.getComponent(TerritorialComponents.PEEKING_EYE);
 
             if(hasEmptyPodium) {
                 if(mainHandStack.getItem() instanceof EnderEyeItem enderEyeItem) {
                     ppbe.setPodiumEye(enderEyeItem);
-                    ppbe.markDirtyAndSync();
                     if (!player.getAbilities().creativeMode)
                         mainHandStack.decrement(1);
                 }
             } else {
                 if(player.isSneaking()) {
                     dropStack(world, pos.up(), ppbe.getPodiumEye().getDefaultStack());
-                    clearPodium(ppbe);
+                    ppbe.clearPodium();
                 } else if(!peekingComponent.isPeeking()) {
                     ppbe.clearPodium();
-                    if(!world.isClient)
-                        ppbe.addBoundEntity(player);
+                    peekingComponent.startPeeking(ppbe);
                 }
             }
-            ppbe.markDirtyAndSync();
+            NetworkingUtils.markDirtyAndSync(be, world);
         }
         return ActionResult.PASS;
+    }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (state.hasBlockEntity() && !state.isOf(newState.getBlock())) {
+            var be = world.getBlockEntity(pos);
+
+            if(be instanceof PlinthOfPeekingBlockEntity ppbe)
+                ppbe.onBlockDestroyed();
+            world.removeBlockEntity(pos);
+        }
     }
 
     @Override
