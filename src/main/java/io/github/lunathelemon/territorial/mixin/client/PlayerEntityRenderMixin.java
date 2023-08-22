@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRenderMixin {
-
     @Inject(method="render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at=@At("HEAD"), cancellable = true)
     public void beforeRender(AbstractClientPlayerEntity player, float f, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumer, int light, CallbackInfo ci) {
         boolean cancelRender = RenderEvents.BEFORE_RENDER_PLAYER.invoker().beforeRenderPlayer(player, matrices, vertexConsumer, tickDelta, light);

@@ -5,7 +5,9 @@ import net.minecraft.client.gl.PostEffectProcessor;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.RotationAxis;
 import org.jetbrains.annotations.Nullable;
 import org.joml.AxisAngle4f;
 import org.joml.Matrix4f;
@@ -98,7 +100,7 @@ public class RenderUtils {
     public static class Shader {
 
         @Nullable
-        private static PostEffectProcessor shader;
+        public static PostEffectProcessor shader;
 
         public static void load(Identifier id) throws IOException {
             var client = MinecraftClient.getInstance();

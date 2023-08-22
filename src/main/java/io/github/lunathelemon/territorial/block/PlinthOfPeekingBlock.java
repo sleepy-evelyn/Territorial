@@ -27,20 +27,21 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class PlinthOfPeekingBlock extends BlockWithEntity {
 
     public static final BooleanProperty ENABLED;
-    public static final BooleanProperty MAGIC_POWERED;
 
     public PlinthOfPeekingBlock() {
         super(FabricBlockSettings.copyOf(Blocks.ENCHANTING_TABLE));
-        this.setDefaultState(this.getStateManager().getDefaultState().with(ENABLED, false));
+        this.setDefaultState(this.getStateManager().getDefaultState()
+                .with(ENABLED, false));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(ENABLED);
-        builder.add(MAGIC_POWERED);
     }
 
     @Override
@@ -112,6 +113,5 @@ public class PlinthOfPeekingBlock extends BlockWithEntity {
 
     static {
         ENABLED = Properties.ENABLED;
-        MAGIC_POWERED = BooleanProperty.of("magic_powered");
     }
 }

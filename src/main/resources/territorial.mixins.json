@@ -14,7 +14,8 @@
   "client": [
     "client.ClientPlayNetworkHandlerMixin",
     "client.InGameHudInvoker",
-    "client.PlayerEntityRenderMixin"
+    "client.PlayerEntityRenderMixin",
+    "client.GameRendererMixin"
   ],
   "server": [
   ],

@@ -33,7 +33,6 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
     private int ticksPeeking;
     @Nullable private RegistryKey<DimensionType> startingDimensionKey;
     @Nullable private BlockPos startingPos;
-
     @Nullable private BoundBlockEntityParams bbeParams;
     @Nullable private PeekingSoundInstance soundInstance;
     private final PlayerEntity provider;

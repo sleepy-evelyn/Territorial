@@ -44,7 +44,6 @@ public class LaserTransmitterBlockEntity extends BlockEntity {
     private static final int maxEntitiesPerBeamTick = 30;
     private static final int lightBlockSpacing = 4;
     private final TickCounter lightBlocksTicker;
-
     private int strength, colour, maxReach, prevPower;
     private float sparkleDistance, reach, prevReach;
     private boolean updateLights;
@@ -234,7 +233,7 @@ public class LaserTransmitterBlockEntity extends BlockEntity {
                         ((LivingEntity)entity).addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 810));
 
                 // Insta death effect
-                if(be.mods.get("death") && be.world != null) {}
+                if(be.mods.get("death") && be.world != null)
                     entity.damage(TerritorialDamageTypes.create(be.world, TerritorialDamageTypes.LASER), 4.0F);
             }
         }

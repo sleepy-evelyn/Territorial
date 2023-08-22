@@ -23,6 +23,12 @@ public final class RenderEvents {
                 return false;
             });
 
+    public static final Event<GameResized> GAME_RESIZED = EventFactory.createArrayBacked(
+            GameResized.class, (callbacks) -> (width, height) -> {
+                for(GameResized callback : callbacks)
+                    callback.onGameResized(width, height);
+            });
+
     @FunctionalInterface
     public interface BeforeRenderPlayer {
         /**
@@ -39,6 +45,11 @@ public final class RenderEvents {
          * @return Whether to cancel rendering the rest of the players arm
          */
         boolean beforeRenderPlayerArms(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity player, ModelPart arm, ModelPart sleeve);
+    }
+
+    @FunctionalInterface
+    public interface GameResized {
+        void onGameResized(int width, int height);
     }
 
     private RenderEvents() {}

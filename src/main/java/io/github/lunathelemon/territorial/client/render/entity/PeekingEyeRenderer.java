@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.WindowEventHandler;
 import net.minecraft.client.gl.PostEffectProcessor;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.model.ModelPart;
@@ -39,6 +40,7 @@ public class PeekingEyeRenderer {
         ClientTickEvents.START_WORLD_TICK.register(PeekingEyeRenderer::handleExitTick);
         RenderEvents.BEFORE_RENDER_PLAYER.register(PeekingEyeRenderer::beforeRenderPlayer);
         RenderEvents.BEFORE_RENDER_PLAYER_ARMS.register(PeekingEyeRenderer::beforeRenderPlayerArms);
+        RenderEvents.GAME_RESIZED.register(PeekingEyeRenderer::onGameResized);
     }
 
     private static void renderShaderOverlay(WorldRenderContext context) {
@@ -84,6 +86,13 @@ public class PeekingEyeRenderer {
         return player.getComponent(TerritorialComponents.PEEKING_EYE).isPeeking();
     }
 
+    private static void onGameResized(int width, int height) {
+        if(RenderUtils.Shader.shader != null) {
+            var client = MinecraftClient.getInstance();
+            RenderUtils.Shader.shader.setupDimensions(client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight());
+        }
+    }
+
     private static void render(AbstractClientPlayerEntity player, MatrixStack matrices, VertexConsumerProvider vertexConsumer, float tickDelta, int light) {
         matrices.push();
 
@@ -98,21 +107,17 @@ public class PeekingEyeRenderer {
 
     private static void renderTrail(AbstractClientPlayerEntity player) {
         var velocity = player.getVelocity();
-        if(MovementUtils.isMoving(player)) {
+        if (MovementUtils.isMoving(player)) {
             var random = player.getRandom();
             double velX = player.getX() + velocity.x;
             double velY = player.getY() + velocity.y;
             double velZ = player.getZ() + velocity.z;
 
             if (player.isTouchingWater())
-                for(int p = 0; p < 4; ++p)
+                for (int p = 0; p < 4; ++p)
                     player.world.addParticle(ParticleTypes.BUBBLE, velX - velocity.x * 0.25, velY - velocity.y * 0.25, velZ - velocity.z * 0.25, velocity.x, velocity.y, velocity.z);
             else
                 player.world.addParticle(ParticleTypes.PORTAL, velX - velocity.x * 0.25 + random.nextDouble() * 0.6 - 0.3, velY - velocity.y * 0.25 - 0.5, velZ - velocity.z * 0.25 + random.nextDouble() * 0.6 - 0.3, velocity.x, velocity.y, velocity.z);
         }
-    }
-
-    private static void renderOverlay() {
-
     }
 }
