@@ -21,6 +21,7 @@
   "block.territorial.omniscient_obsidian": "Omniscient Obsidian",
   "block.territorial.laser_transmitter": "Laser Transmitter",
   "block.territorial.laser_receiver": "Laser Receiver",
+  "block.territorial.corrupted_beacon": "Corrupted Beacon",
 
   "_comment": "Items",
   "item.territorial.lens": "Lens",

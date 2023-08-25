@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "corrupted=true": { "model": "territorial:block/corrupted_beacon_active" },
+    "corrupted=false": { "model": "territorial:block/corrupted_beacon" }
+  }
+}

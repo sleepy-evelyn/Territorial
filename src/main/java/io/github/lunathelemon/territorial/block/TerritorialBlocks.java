@@ -20,6 +20,7 @@ public final class TerritorialBlocks {
     public static final Block LASER_TRANSMITTER = new LaserTransmitterBlock();
     public static final Block LASER_RECEIVER = new LaserReceiverBlock();
     public static final Block PLINTH_OF_PEEKING = new PlinthOfPeekingBlock();
+    public static final Block CORRUPTED_BEACON = new CorruptedBeaconBlock();
 
     public static void registerAll() {
         register("omniscient_obsidian", OMNISCIENT_OBSIDIAN);
@@ -29,6 +30,7 @@ public final class TerritorialBlocks {
         register("laser_transmitter", LASER_TRANSMITTER);
         register("laser_receiver", LASER_RECEIVER);
         register("plinth_of_peeking", PLINTH_OF_PEEKING);
+        register("corrupted_beacon", CORRUPTED_BEACON);
     }
 
     private static void register(String id, Block block) {

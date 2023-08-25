@@ -1,10 +1,11 @@
 package io.github.lunathelemon.territorial;
 
+import io.github.lunathelemon.territorial.api.event.CorruptionEvents;
 import io.github.lunathelemon.territorial.block.TerritorialBlocks;
+import io.github.lunathelemon.territorial.block.entity.CorruptedBeaconBlockEntity;
 import io.github.lunathelemon.territorial.block.entity.TerritorialBlockEntities;
 import io.github.lunathelemon.territorial.config.TerritorialConfig;
 import io.github.lunathelemon.territorial.entity.effect.TerritorialStatusEffects;
-import io.github.lunathelemon.territorial.event.EventPlayground;
 import io.github.lunathelemon.territorial.init.C2SPacketRegistry;
 import io.github.lunathelemon.territorial.init.ItemGroupRegistry;
 import io.github.lunathelemon.territorial.item.TerritorialItems;
@@ -12,7 +13,6 @@ import io.github.lunathelemon.territorial.recipe.TerritorialRecipes;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +34,15 @@ public class Territorial implements ModInitializer {
 		TerritorialStatusEffects.registerAll();
 		ItemGroupRegistry.register();
 
+		// Events
+		registerCommonEvents();
+
 		// Packets
 		C2SPacketRegistry.register();
+	}
+
+	private void registerCommonEvents() {
+		CorruptionEvents.BLOCK_CORRUPTED.register(CorruptedBeaconBlockEntity::onCorruptedBlock);
 	}
 
 	private static boolean isDebugMode() {

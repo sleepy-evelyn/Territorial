@@ -5,17 +5,21 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "common.AnvilChunkStorageAccessor",
+    "common.BeaconBlockEntityAccessor",
+    "common.BeaconBlockEntityMixin",
+    "common.BlockMixin",
     "common.EnderEyeMixin",
     "common.LightningEntityMixin",
     "common.RuinedPortalStructurePieceMixin",
     "common.ServerPlayerInteractionManagerMixin",
+    "common.ServerPlayNetworkHandlerMixin",
     "common.StatusEffectInstanceMixin"
   ],
   "client": [
     "client.ClientPlayNetworkHandlerMixin",
+    "client.GameRendererMixin",
     "client.InGameHudInvoker",
-    "client.PlayerEntityRenderMixin",
-    "client.GameRendererMixin"
+    "client.PlayerEntityRenderMixin"
   ],
   "server": [
   ],

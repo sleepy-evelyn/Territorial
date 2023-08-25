@@ -6,13 +6,11 @@ import io.github.lunathelemon.territorial.api.component.BoundBlockEntityParams;
 import io.github.lunathelemon.territorial.api.component.IPeekingEyeComponent;
 import io.github.lunathelemon.territorial.block.TerritorialBlocks;
 import io.github.lunathelemon.territorial.component.TerritorialComponents;
-import net.fabricmc.fabric.api.util.NbtType;
-import net.minecraft.block.Block;
+import io.github.lunathelemon.territorial.util.BeaconUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.EnderEyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.*;
@@ -20,12 +18,10 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -47,7 +43,7 @@ public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBloc
 
     public static void tick(World world, BlockPos pos, BlockState state, PlinthOfPeekingBlockEntity be) {
         if(world.getTime() % 80 == 0) {
-            int newLevel = be.updateLevel(world, pos);
+            int newLevel = BeaconUtils.updateLevel(world, pos, List.of(TerritorialBlocks.OMNISCIENT_OBSIDIAN));
 
             // Level has changed
             if(newLevel != be.level) {
@@ -56,35 +52,6 @@ public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBloc
             }
             be.level = newLevel;
         }
-    }
-
-    private int updateLevel(World world, BlockPos pos) {
-        int level = 0;
-        final int bottomY = world.getBottomY();
-        int y, xPos, zPos;
-
-        // Decrement the y value to check the blocks below
-        for(int yInc = 1; yInc <= 4; level = yInc++) {
-            y = pos.getY() - yInc;
-            // If we reach the bottom of the world exist early
-            if(y < bottomY)
-                break;
-            else {
-                xPos = pos.getX();
-                zPos = pos.getZ();
-                // Check each slice of blocks below in the same way a beacon would
-                for(int x = xPos - yInc; x <= xPos + yInc; ++x) {
-                    for(int z = zPos - yInc; z <= zPos + yInc; ++z) {
-                        // Return the current level if a new block cannot be found
-                        if(!world.getBlockState(new BlockPos(x, y, z)).getBlock()
-                                .equals(TerritorialBlocks.OMNISCIENT_OBSIDIAN)) {
-                             return level;
-                        }
-                    }
-                }
-            }
-        }
-        return level;
     }
 
     @Override
