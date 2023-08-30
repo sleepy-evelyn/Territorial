@@ -14,7 +14,8 @@ public class TerritorialClient implements ClientModInitializer {
         RenderRegistry.register();
         ItemPredicateRegistry.register();
         HudRenderHandler.init();
-        PeekingEyeRenderer.init();
-        EventPlayground.init();
+
+        // Events
+        PeekingEyeRenderer.registerEvents();
     }
 }

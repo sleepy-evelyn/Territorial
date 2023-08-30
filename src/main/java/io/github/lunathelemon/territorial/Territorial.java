@@ -13,6 +13,8 @@ import io.github.lunathelemon.territorial.recipe.TerritorialRecipes;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.minecraft.world.dimension.NetherPortal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,14 +37,10 @@ public class Territorial implements ModInitializer {
 		ItemGroupRegistry.register();
 
 		// Events
-		registerCommonEvents();
+		CorruptionEvents.BLOCK_CORRUPTED.register(CorruptedBeaconBlockEntity::onCorruptedBlock);
 
 		// Packets
 		C2SPacketRegistry.register();
-	}
-
-	private void registerCommonEvents() {
-		CorruptionEvents.BLOCK_CORRUPTED.register(CorruptedBeaconBlockEntity::onCorruptedBlock);
 	}
 
 	private static boolean isDebugMode() {

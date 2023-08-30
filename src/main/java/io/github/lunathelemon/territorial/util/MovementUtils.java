@@ -42,27 +42,4 @@ public class MovementUtils {
             }
         }
     }
-
-    public static void moveToWorldAndTeleport(ServerPlayerEntity player, ServerWorld destination, BlockPos teleportLocation) {
-        if(player != null && !player.isRemoved()) {
-            var world = player.getWorld();
-            if(world != null) {
-                world.getProfiler().push("changeDimension");
-                player.detach();
-                var entity = player.getType().create(destination);
-                if(entity != null) {
-                    entity.copyFrom(player);
-                    world.getProfiler().push("reposition");
-                    entity.refreshPositionAndAngles(teleportLocation, player.getYaw(), player.getPitch());
-                    entity.setVelocity(Vec3d.ZERO);
-                    destination.onDimensionChanged(entity);
-                }
-                player.setRemoved(Entity.RemovalReason.CHANGED_DIMENSION);
-                world.getProfiler().pop();
-                world.resetIdleTimeout();
-                destination.resetIdleTimeout();
-                world.getProfiler().pop();
-            }
-        }
-    }
 }

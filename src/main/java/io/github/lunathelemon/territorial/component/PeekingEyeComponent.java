@@ -15,6 +15,7 @@ import net.minecraft.client.RunArgs;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -155,12 +156,12 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
         if(nbt.contains("startingDimensionKey"))
             startingDimensionKey = RegistryKey.of(RegistryKeys.DIMENSION_TYPE, new Identifier(nbt.getString("startingDimensionKey")));
         if(nbt.contains("startingPos"))
-            startingPos = new BlockPos(NbtUtils.deserializeVec3i(nbt.getIntArray("startingPos")));
+            startingPos = NbtHelper.toBlockPos(nbt.getCompound("startingPos"));
         if(nbt.contains("boundBlockEntity")) {
             var bbeNbt = nbt.getCompound("boundBlockEntity");
             bbeParams = new BoundBlockEntityParams(
                     RegistryKey.of(RegistryKeys.DIMENSION_TYPE, new Identifier(nbt.getString("dimensionKey"))),
-                            new BlockPos(NbtUtils.deserializeVec3i(bbeNbt.getIntArray("pos"))),
+                            NbtHelper.toBlockPos(nbt.getCompound("pos")),
                             bbeNbt.getInt("reach")
             );
         }
@@ -172,11 +173,11 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
         if(startingDimensionKey != null)
             nbt.putString("startingDimensionKey", startingDimensionKey.getValue().toString());
         if(startingPos != null)
-            nbt.putIntArray("startingPos", NbtUtils.serializeVec3i(startingPos));
+            nbt.put("startingPos", NbtHelper.fromBlockPos(startingPos));
         if(bbeParams != null) {
             var bbeNbt = new NbtCompound();
             bbeNbt.putString("dimensionKey", bbeParams.dimensionKey().getValue().toString());
-            bbeNbt.putIntArray("pos", NbtUtils.serializeVec3i(bbeParams.pos()));
+            bbeNbt.put("pos", NbtHelper.fromBlockPos(bbeParams.pos()));
             bbeNbt.putInt("reach", bbeParams.reach());
             nbt.put("boundBlockEntity", bbeNbt);
         }

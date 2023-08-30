@@ -22,6 +22,7 @@
   "block.territorial.laser_transmitter": "Laser Transmitter",
   "block.territorial.laser_receiver": "Laser Receiver",
   "block.territorial.corrupted_beacon": "Corrupted Beacon",
+  "block.territorial.plinth_of_peeking": "Plinth of Peeking",
 
   "_comment": "Items",
   "item.territorial.lens": "Lens",
@@ -44,5 +45,9 @@
   "tooltip.territorial.modifier.highlight": "§7§oHighlight",
   "tooltip.territorial.modifier.death": "§7§oInstant Death",
   "tooltip.territorial.modifier.rainbow": "§7§oRainbow",
-  "tooltip.territorial.modifier.light": "§7§oLight"
+  "tooltip.territorial.modifier.light": "§7§oLight",
+
+  "_emi": "EMI",
+  "emi.category.territorial.portal": "Portal Infusion"
+
 }

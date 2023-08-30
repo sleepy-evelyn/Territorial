@@ -6,6 +6,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -26,14 +27,14 @@ public abstract class StatusEffectInstanceMixin implements StatusEffectInstanceA
     @Inject(at = @At("HEAD"), method = "writeNbt")
     public void writeNbt(NbtCompound tag, CallbackInfoReturnable<NbtCompound> cir) {
         if(lastPosApplied != null) {
-            tag.putIntArray("last_pos_applied", NbtUtils.serializeVec3i(lastPosApplied));
+            tag.put("last_pos_applied", NbtHelper.fromBlockPos(lastPosApplied));
         }
     }
 
     @Inject(at = @At("HEAD"), method = "fromNbt(Lnet/minecraft/entity/effect/StatusEffect;Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/entity/effect/StatusEffectInstance;")
     private static void fromNbt(StatusEffect statusEffect, NbtCompound tag, CallbackInfoReturnable<StatusEffectInstance> ci) {
         if (tag.contains("last_pos_applied")) {
-            lastPosApplied = new BlockPos(NbtUtils.deserializeVec3i(tag.getIntArray("last_pos_applied")));
+            lastPosApplied = NbtHelper.toBlockPos(tag.getCompound("last_pos_applied"));
         }
     }
 }

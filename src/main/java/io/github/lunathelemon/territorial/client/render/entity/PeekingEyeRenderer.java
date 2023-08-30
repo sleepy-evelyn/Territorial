@@ -35,7 +35,7 @@ public class PeekingEyeRenderer {
 
     private static final int exitMessageTickDuration = 40;
 
-    public static void init() {
+    public static void registerEvents() {
         WorldRenderEvents.END.register(PeekingEyeRenderer::renderShaderOverlay);
         ClientTickEvents.START_WORLD_TICK.register(PeekingEyeRenderer::handleExitTick);
         RenderEvents.BEFORE_RENDER_PLAYER.register(PeekingEyeRenderer::beforeRenderPlayer);

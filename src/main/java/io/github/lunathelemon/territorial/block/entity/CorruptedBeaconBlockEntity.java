@@ -2,6 +2,7 @@ package io.github.lunathelemon.territorial.block.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import io.github.lunathelemon.territorial.api.sound.TerritorialSounds;
 import io.github.lunathelemon.territorial.block.CorruptedBeaconBlock;
 import io.github.lunathelemon.territorial.block.TerritorialBlocks;
 import io.github.lunathelemon.territorial.screen.CorruptedBeaconScreenHandler;
@@ -42,6 +43,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import static io.github.lunathelemon.territorial.api.sound.TerritorialSounds.CORRUPTED_BEACON_AMBIENT;
+import static io.github.lunathelemon.territorial.api.sound.TerritorialSounds.CORRUPTED_BEACON_POWER_SELECT;
+
 public class CorruptedBeaconBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
 
     public static final StatusEffect[][] EFFECTS_BY_LEVEL = new StatusEffect[][]{
@@ -79,9 +83,8 @@ public class CorruptedBeaconBlockEntity extends BlockEntity implements NamedScre
                 switch (index) {
                     case 0 -> CorruptedBeaconBlockEntity.this.level = value;
                     case 1 -> {
-                        if (!world.isClient && !CorruptedBeaconBlockEntity.this.beamSegments.isEmpty()) {
-                            world.playSound(null, pos, SoundEvents.BLOCK_BEACON_POWER_SELECT, SoundCategory.BLOCKS, 1f, 0.2f);
-                        }
+                        if (!world.isClient && !CorruptedBeaconBlockEntity.this.beamSegments.isEmpty())
+                            CORRUPTED_BEACON_POWER_SELECT.play(world, pos);
                         CorruptedBeaconBlockEntity.this.primary = CorruptedBeaconBlockEntity.getPotionEffectById(value);
                     }
                     case 2 -> CorruptedBeaconBlockEntity.this.secondary = CorruptedBeaconBlockEntity.getPotionEffectById(value);
@@ -145,12 +148,7 @@ public class CorruptedBeaconBlockEntity extends BlockEntity implements NamedScre
             }
             if (blockEntity.level > 0 && !blockEntity.beamSegments.isEmpty()) {
                 applyPlayerEffects(world, pos, blockEntity.level, blockEntity.primary, blockEntity.secondary);
-                world.playSound(null, pos, SoundEvents.BLOCK_BEACON_AMBIENT, SoundCategory.BLOCKS, 0.6f, 0.1f);
-
-                var randomInt = MathHelper.nextInt(Random.create(), 1, 10);
-                if(randomInt >= 8) {
-                    world.playSound(null, pos, SoundEvents.ENTITY_ENDERMAN_AMBIENT, SoundCategory.AMBIENT, 0.3f, 0.3f);
-                }
+                CORRUPTED_BEACON_AMBIENT.play(world, pos);
             }
         }
 
@@ -161,16 +159,15 @@ public class CorruptedBeaconBlockEntity extends BlockEntity implements NamedScre
             if (!world.isClient) {
                 boolean bl2 = blockEntity.level > 0;
                 if (!bl && bl2) {
-                    world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1f, 0.4f);
+                    TerritorialSounds.CORRUPTED_BEACON_ACTIVATED.play(world, pos);
                     world.setBlockState(pos, state.with(CorruptedBeaconBlock.CORRUPTED, true));
 
                     for (ServerPlayerEntity serverPlayerEntity : world.getNonSpectatingEntities(ServerPlayerEntity.class, (new Box((double) x, (double) y, (double) z, (double) x, (double) (y - 4), (double) z)).expand(10.0D, 5.0D, 10.0D))) {
                         Criteria.CONSTRUCT_BEACON.trigger(serverPlayerEntity, blockEntity.level);
                     }
                 } else if (bl && !bl2) {
-                    world.playSound(null, pos, SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.BLOCKS, 1f, 0.2f);
+                    TerritorialSounds.CORRUPTED_BEACON_DEACTIVATED.play(world, pos);
                     world.setBlockState(pos, state.with(CorruptedBeaconBlock.CORRUPTED, false));
-
                 }
             }
         }
@@ -178,7 +175,7 @@ public class CorruptedBeaconBlockEntity extends BlockEntity implements NamedScre
     }
 
     public void markRemoved() {
-        world.playSound(null, pos, SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.BLOCKS, 1f, 0.5f);
+        TerritorialSounds.CORRUPTED_BEACON_DEACTIVATED.play(world, pos);
         super.markRemoved();
     }
 
@@ -216,8 +213,7 @@ public class CorruptedBeaconBlockEntity extends BlockEntity implements NamedScre
     public static void onCorruptedBlock(World world, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
         if(blockEntity instanceof BeaconBlockEntity) {
             world.setBlockState(pos, TerritorialBlocks.CORRUPTED_BEACON.getDefaultState().with(CorruptedBeaconBlock.CORRUPTED, true));
-            world.playSound(null, pos, SoundEvents.BLOCK_ENDER_CHEST_OPEN, SoundCategory.NEUTRAL, 0.8f, 0.1f);
-            world.playSound(null, pos, SoundEvents.BLOCK_SCULK_SENSOR_STEP, SoundCategory.HOSTILE, 0.6f, 0.3f);
+            TerritorialSounds.BEACON_CORRUPTED.play(world, pos);
         }
     }
 

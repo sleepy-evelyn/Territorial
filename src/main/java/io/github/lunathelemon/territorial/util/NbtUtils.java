@@ -18,18 +18,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class NbtUtils {
 
-    public static int[] serializeVec3i(@NotNull Vec3i vec3i) {
-        int[] posSerializable = new int[3];
-        posSerializable[0] = vec3i.getX();
-        posSerializable[1] = vec3i.getY();
-        posSerializable[2] = vec3i.getZ();
-        return posSerializable;
-    }
-
-    public static Vec3i deserializeVec3i(int[] posSerializable) {
-        return new Vec3i(posSerializable[0], posSerializable[1], posSerializable[2]);
-    }
-
     public static int[] serializeChunkPos(@NotNull ChunkPos chunkPos) {
         int[] chunkSerializable = new int[2];
         chunkSerializable[0] = chunkPos.x;

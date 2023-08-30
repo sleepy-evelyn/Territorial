@@ -30,13 +30,22 @@ public final class TerritorialBlocks {
         register("laser_transmitter", LASER_TRANSMITTER);
         register("laser_receiver", LASER_RECEIVER);
         register("plinth_of_peeking", PLINTH_OF_PEEKING);
-        register("corrupted_beacon", CORRUPTED_BEACON);
+        register("corrupted_beacon", CORRUPTED_BEACON, true, false);
     }
 
+
     private static void register(String id, Block block) {
+        register(id, block, true, true);
+    }
+    private static void register(String id, Block block, boolean registerBlockItem, boolean addToGroupRegistry) {
         Registry.register(Registries.BLOCK, new Identifier(Territorial.MOD_ID, id), block);
-        var blockItem = new BlockItem(block, new FabricItemSettings());
-        Registry.register(Registries.ITEM, new Identifier(Territorial.MOD_ID, id), blockItem);
-        ItemGroupRegistry.queueStackRegistration(blockItem.getDefaultStack());
+
+        if (registerBlockItem) {
+            var blockItem = new BlockItem(block, new FabricItemSettings());
+            Registry.register(Registries.ITEM, new Identifier(Territorial.MOD_ID, id), blockItem);
+
+            if(addToGroupRegistry)
+                ItemGroupRegistry.queueStackRegistration(blockItem.getDefaultStack());
+        }
     }
 }

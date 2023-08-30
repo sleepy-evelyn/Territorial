@@ -1,6 +1,10 @@
 package io.github.lunathelemon.territorial.recipe;
 
 import io.github.lunathelemon.territorial.Territorial;
+import io.github.lunathelemon.territorial.handler.PortalInfusionRecipeHandler;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.registry.Registries;

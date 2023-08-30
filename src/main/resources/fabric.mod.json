@@ -25,10 +25,13 @@
       "io.github.lunathelemon.territorial.TerritorialClient"
     ],
     "modmenu": [
-      "io.github.lunathelemon.territorial.config.TMMIntegration"
+      "io.github.lunathelemon.territorial.integration.modmenu.TerritorialModMenuPlugin"
     ],
     "cardinal-components": [
       "io.github.lunathelemon.territorial.component.TerritorialComponents"
+    ],
+    "emi": [
+      "io.github.lunathelemon.territorial.integration.emi.TerritorialEmiPlugin"
     ]
   },
   "mixins": [

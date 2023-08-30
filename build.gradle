@@ -48,6 +48,10 @@ dependencies {
 	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_components}")) {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
+
+	// EMI
+	modCompileOnly "dev.emi:emi-fabric:${emi_version}:api"
+	modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
 }
 
 processResources {
