@@ -4,6 +4,7 @@ import io.github.lunathelemon.territorial.block.entity.LaserTransmitterBlockEnti
 import io.github.lunathelemon.territorial.client.render.CustomRenderLayers;
 import io.github.lunathelemon.territorial.util.MathUtils;
 import io.github.lunathelemon.territorial.util.RenderUtils;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -32,7 +33,10 @@ public class LaserBlockEntityRenderer implements BlockEntityRenderer<LaserTransm
     private static final float[] rainbowColour = new float[]{0, 0, 0};
     private static int rainbowTargetIndex = 0;
 
-    public LaserBlockEntityRenderer() {}
+    public LaserBlockEntityRenderer() {
+        ClientTickEvents.START_WORLD_TICK.register((clientWorld) -> LaserBlockEntityRenderer.rainbowColourTick());
+        ClientTickEvents.END_CLIENT_TICK.register((client) -> LaserBlockEntityRenderer.rainbowColourTick());
+    }
 
     @Override
     public void render(LaserTransmitterBlockEntity be, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
@@ -89,6 +93,7 @@ public class LaserBlockEntityRenderer implements BlockEntityRenderer<LaserTransm
     }
 
     public static void rainbowColourTick() {
+        // TODO - Only run this if a rainbow laser is found
         float[] targetColour = RAINBOW_COLOURS[rainbowTargetIndex];
         for(int i=0; i < 3; i++) {
             if(targetColour[i] != rainbowColour[i]) {

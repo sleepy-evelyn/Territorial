@@ -14,9 +14,12 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LensItem extends Item {
 
@@ -30,8 +33,12 @@ public class LensItem extends Item {
         NbtCompound tag = stack.getSubNbt("beam");
 
         if (tag != null) {
-            DyeColor dyeColour = Optional.of(DyeColor.byId(tag.getInt("colour"))).orElse(DyeColor.WHITE);
-            String dyeNameCapitalized = dyeColour.getName().substring(0, 1).toUpperCase() + dyeColour.getName().substring(1);
+            var dyeColour = Optional.of(DyeColor.byId(tag.getInt("colour"))).orElse(DyeColor.WHITE);
+
+            String dyeNameCapitalized = Stream.of(dyeColour.getName().split("_"))
+                    .map(part -> part.replace("_", " "))
+                    .map(part -> part.substring(0, 1).toUpperCase() + part.substring(1))
+                    .collect(Collectors.joining());
             return Text.of(dyeNameCapitalized + " " + translationText.getString());
         }
         return translationText;
