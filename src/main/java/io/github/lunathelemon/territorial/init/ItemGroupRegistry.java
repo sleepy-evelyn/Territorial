@@ -13,7 +13,7 @@ import java.util.Queue;
 
 public final class ItemGroupRegistry {
 
-    public static final ItemGroup BASE_GROUP = FabricItemGroup.builder(new Identifier(Territorial.MOD_ID, "base_group"))
+    public static final ItemGroup BASE_GROUP = FabricItemGroup.builder(Territorial.getID("base_group"))
             .icon(() -> new ItemStack(Blocks.OBSIDIAN)).build();
 
     private static final Queue<ItemStack> registrationStackQueue = new ArrayDeque<>();

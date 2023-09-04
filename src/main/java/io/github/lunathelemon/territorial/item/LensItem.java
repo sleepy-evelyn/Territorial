@@ -35,10 +35,11 @@ public class LensItem extends Item {
         if (tag != null) {
             var dyeColour = Optional.of(DyeColor.byId(tag.getInt("colour"))).orElse(DyeColor.WHITE);
 
+            // TODO - Fix this for other languages
             String dyeNameCapitalized = Stream.of(dyeColour.getName().split("_"))
-                    .map(part -> part.replace("_", " "))
+                    .map(part -> part.replace("_", ""))
                     .map(part -> part.substring(0, 1).toUpperCase() + part.substring(1))
-                    .collect(Collectors.joining());
+                    .collect(Collectors.joining(" "));
             return Text.of(dyeNameCapitalized + " " + translationText.getString());
         }
         return translationText;

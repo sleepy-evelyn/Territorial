@@ -144,7 +144,7 @@ public class CorruptedBeaconBlockEntity extends BlockEntity implements NamedScre
         i = blockEntity.level;
         if (world.getTime() % 80L == 0L) {
             if (!blockEntity.beamSegments.isEmpty()) {
-                blockEntity.level = BeaconUtils.updateLevel(world, pos, List.of(TerritorialBlocks.OMNISCIENT_OBSIDIAN));
+                blockEntity.level = BeaconUtils.updateCorruptedBeaconLevel(world, pos);
             }
             if (blockEntity.level > 0 && !blockEntity.beamSegments.isEmpty()) {
                 applyPlayerEffects(world, pos, blockEntity.level, blockEntity.primary, blockEntity.secondary);

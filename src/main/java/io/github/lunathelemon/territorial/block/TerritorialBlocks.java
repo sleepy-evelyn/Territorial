@@ -9,7 +9,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
 
 public final class TerritorialBlocks {
 
@@ -38,11 +37,11 @@ public final class TerritorialBlocks {
         register(id, block, true, true);
     }
     private static void register(String id, Block block, boolean registerBlockItem, boolean addToGroupRegistry) {
-        Registry.register(Registries.BLOCK, new Identifier(Territorial.MOD_ID, id), block);
+        Registry.register(Registries.BLOCK, Territorial.getID(id), block);
 
         if (registerBlockItem) {
             var blockItem = new BlockItem(block, new FabricItemSettings());
-            Registry.register(Registries.ITEM, new Identifier(Territorial.MOD_ID, id), blockItem);
+            Registry.register(Registries.ITEM, Territorial.getID(id), blockItem);
 
             if(addToGroupRegistry)
                 ItemGroupRegistry.queueStackRegistration(blockItem.getDefaultStack());

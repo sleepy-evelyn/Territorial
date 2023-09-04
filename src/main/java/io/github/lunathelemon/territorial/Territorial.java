@@ -1,5 +1,6 @@
 package io.github.lunathelemon.territorial;
 
+import io.github.lunathelemon.territorial.api.TerritorialAPI;
 import io.github.lunathelemon.territorial.api.event.CorruptionEvents;
 import io.github.lunathelemon.territorial.block.TerritorialBlocks;
 import io.github.lunathelemon.territorial.block.entity.CorruptedBeaconBlockEntity;
@@ -13,17 +14,14 @@ import io.github.lunathelemon.territorial.recipe.TerritorialRecipes;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import net.minecraft.world.dimension.NetherPortal;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.management.ManagementFactory;
 
 public class Territorial implements ModInitializer {
-
-	public static final String MOD_ID = "territorial";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final Logger LOGGER = LoggerFactory.getLogger(TerritorialAPI.MOD_ID);
 	public static final boolean IS_DEBUG_MODE = isDebugMode();
 
 	@Override
@@ -41,6 +39,10 @@ public class Territorial implements ModInitializer {
 
 		// Packets
 		C2SPacketRegistry.register();
+	}
+
+	public static Identifier getID(String path) {
+		return new Identifier(TerritorialAPI.MOD_ID, path);
 	}
 
 	private static boolean isDebugMode() {

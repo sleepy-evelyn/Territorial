@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 public class TerritorialComponents implements EntityComponentInitializer {
 
     public static final ComponentKey<IPeekingEyeComponent> PEEKING_EYE
-            = ComponentRegistry.getOrCreate(new Identifier(Territorial.MOD_ID, "peeking_eye"), IPeekingEyeComponent.class);
+            = ComponentRegistry.getOrCreate(Territorial.getID("peeking_eye"), IPeekingEyeComponent.class);
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {

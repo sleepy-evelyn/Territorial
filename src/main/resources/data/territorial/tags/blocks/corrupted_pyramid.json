@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:obsidian",
+    "minecraft:crying_obsidian",
+    "territorial:omniscient_obsidian"
+  ]
+}

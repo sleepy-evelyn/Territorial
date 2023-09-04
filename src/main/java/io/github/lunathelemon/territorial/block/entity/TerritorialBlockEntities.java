@@ -28,6 +28,6 @@ public class TerritorialBlockEntities {
     }
 
     private static <T extends BlockEntity> void register(String id, BlockEntityType<T> beType) {
-        Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Territorial.MOD_ID, id), beType);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, Territorial.getID(id), beType);
     }
 }

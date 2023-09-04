@@ -10,8 +10,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public final class TerritorialDamageTypes {
-    // TODO - 1.19.4 code
-
     public static final RegistryKey<DamageType> OMNISCIENT_OBSIDIAN = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(Territorial.MOD_ID, "omniscient_obsidian"));
     public static final RegistryKey<DamageType> LASER = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(Territorial.MOD_ID, "laser"));
 

@@ -50,7 +50,7 @@ public class PeekingEyeRenderer {
             if(peekingCapability.isPeeking()) {
                 if(!RenderUtils.Shader.isLoaded()) {
                     try {
-                        RenderUtils.Shader.load(new Identifier(Territorial.MOD_ID, "shaders/post/" + "peeking_eye" + ".json"));
+                        RenderUtils.Shader.load(Territorial.getID("shaders/post/" + "peeking_eye" + ".json"));
                     } catch(IOException ignored) {}
                 }
                 RenderUtils.Shader.render(context.tickDelta());

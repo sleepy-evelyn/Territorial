@@ -25,7 +25,7 @@ public abstract class BeaconBlockEntityMixin {
     private static void tick(World world, BlockPos pos, BlockState state, BeaconBlockEntity blockEntity, CallbackInfo ci,
                              int x, int y, int z, BlockPos posLocal, BeaconBlockEntity.BeamSegment segment, int yTopPos, final int levelLocal) {
         if (world.getTime() % 80L == 0L && levelLocal == 0) {
-            int finalLevel = BeaconUtils.updateLevel(world, pos, List.of(TerritorialBlocks.OMNISCIENT_OBSIDIAN));
+            int finalLevel = BeaconUtils.updateCorruptedBeaconLevel(world, pos);
             if(finalLevel > 0) {
                 CorruptionEvents.BLOCK_CORRUPTED.invoker().onCorruptedBlock(world, pos, state, blockEntity);
             }

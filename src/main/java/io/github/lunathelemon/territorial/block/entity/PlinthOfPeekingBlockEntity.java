@@ -7,7 +7,9 @@ import io.github.lunathelemon.territorial.api.component.IPeekingEyeComponent;
 import io.github.lunathelemon.territorial.block.TerritorialBlocks;
 import io.github.lunathelemon.territorial.component.TerritorialComponents;
 import io.github.lunathelemon.territorial.util.BeaconUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +22,7 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +32,10 @@ import java.util.*;
 public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBlockEntity {
 
     private static final int[] reachMultipliers = { 1, 3, 8, 16, 27 };
-    private static final Set<Item> acceptedPodiumItems = Set.of(Items.ENDER_EYE);
+    // TODO - Move this to a tag at some point
+    private static final List<Block> acceptedBeaconBaseBlocks = List.of(
+            TerritorialBlocks.OMNISCIENT_OBSIDIAN, Blocks.OBSIDIAN, Blocks.CRYING_OBSIDIAN
+    );
 
     private int level;
     private Item podiumItem;
@@ -43,7 +49,9 @@ public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBloc
 
     public static void tick(World world, BlockPos pos, BlockState state, PlinthOfPeekingBlockEntity be) {
         if(world.getTime() % 80 == 0) {
-            int newLevel = BeaconUtils.updateLevel(world, pos, List.of(TerritorialBlocks.OMNISCIENT_OBSIDIAN));
+            int newLevel = BeaconUtils.updateLevel(
+                    world, pos, acceptedBeaconBaseBlocks,
+                    new Pair<>(TerritorialBlocks.OMNISCIENT_OBSIDIAN, 0.5f));
 
             // Level has changed
             if(newLevel != be.level) {
