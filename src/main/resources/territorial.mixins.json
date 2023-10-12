@@ -1,10 +1,9 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "io.github.lunathelemon.territorial.mixin",
+  "package": "io.github.sleepy_evelyn.territorial.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "common.AnvilChunkStorageAccessor",
     "common.BeaconBlockEntityAccessor",
     "common.BeaconBlockEntityMixin",
     "common.BlockMixin",
@@ -13,7 +12,8 @@
     "common.RuinedPortalStructurePieceMixin",
     "common.ServerPlayerInteractionManagerMixin",
     "common.ServerPlayNetworkHandlerMixin",
-    "common.StatusEffectInstanceMixin"
+    "common.StatusEffectInstanceMixin",
+    "common.ThreadedChunkManagerAccessor"
   ],
   "client": [
     "client.ClientPlayNetworkHandlerMixin",
@@ -21,9 +21,7 @@
     "client.InGameHudInvoker",
     "client.PlayerEntityRenderMixin"
   ],
-  "server": [
-  ],
   "injectors": {
     "defaultRequire": 1
-  }
+	}
 }

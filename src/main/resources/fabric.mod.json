@@ -19,19 +19,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.lunathelemon.territorial.Territorial"
+      "io.github.sleepy_evelyn.territorial.Territorial"
     ],
     "client": [
-      "io.github.lunathelemon.territorial.TerritorialClient"
-    ],
-    "modmenu": [
-      "io.github.lunathelemon.territorial.integration.modmenu.TerritorialModMenuPlugin"
-    ],
-    "cardinal-components": [
-      "io.github.lunathelemon.territorial.component.TerritorialComponents"
+      "io.github.sleepy_evelyn.territorial.TerritorialClient"
     ],
     "emi": [
-      "io.github.lunathelemon.territorial.integration.emi.TerritorialEmiPlugin"
+      "io.github.sleepy_evelyn.territorial.integration.emi.TerritorialEmiPlugin"
     ]
   },
   "mixins": [
@@ -47,7 +41,7 @@
   "depends": {
     "fabricloader": ">=0.14.19",
     "fabric-api": "*",
-    "minecraft": "~1.19.3",
+    "minecraft": "~1.20.1",
     "java": ">=17"
   },
   "suggests": {

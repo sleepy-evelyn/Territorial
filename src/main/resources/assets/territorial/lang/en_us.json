@@ -1,5 +1,5 @@
 {
-  "_comment": "Config",
+  "_comment1": "Config",
   "text.autoconfig.territorial/territorial.title": "Territorial Config",
   "text.autoconfig.territorial/territorial.option.omniscientObsidianRecipe": "Omniscient Obsidian recipe",
   "text.autoconfig.territorial/territorial.option.omniscientObsidianSpread": "Omniscient Obsidian spread",
@@ -7,14 +7,14 @@
   "text.autoconfig.territorial/territorial.option.laserTransmitterMaxReach": "Laser Transmitter max reach",
   "text.autoconfig.territorial/territorial.option.laserTargetsAllMobs": "Laser targets all mobs",
 
-  "_comment": "Display messages",
+  "_comment2": "Display messages",
   "text.territorial.overlay.exit_peeking_mode": "Press Alt to exit Peeking Mode",
   "text.territorial.peeking_teleport_failed": "",
 
-  "_comment": "Item Groups",
-  "itemGroup.territorial.base_group": "Territorial",
+  "_comment3": "Item Groups",
+  "item_group.territorial": "Territorial",
 
-  "_comment": "Blocks",
+  "_comment4": "Blocks",
   "block.territorial.eclipse_rose": "Eclipse Rose",
   "block.territorial.eclipse_rose_bush": "Eclipse Rose Bush",
   "block.territorial.eclipse_trap": "Eclipse Trap",
