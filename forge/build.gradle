@@ -7,6 +7,10 @@ architectury {
     forge()
 }
 
+repositories {
+    maven { url "https://maven.neoforged.net/releases/" }
+}
+
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 
@@ -28,7 +32,8 @@ configurations {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    forge "net.neoforged:forge:${rootProject.neoforge_version}"
+
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
