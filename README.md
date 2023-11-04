@@ -1,4 +1,2 @@
 # Territorial
-
-## License
-This project uses a custom license found within the `LICENSE.md` file. If you have any queries about the license please submit a github issue with the request.
+[![License](https://img.shields.io/badge/license-custom-orange)](https://github.com/sleepy-evelyn/Territorial/blob/architectury-attempt/LICENSE.md)
