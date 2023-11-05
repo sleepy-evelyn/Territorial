@@ -3,7 +3,7 @@
 ![Requires Fabric API](https://raw.githubusercontent.com/intergrav/devins-badges/1aec26abb75544baec37249f42008b2fcc0e731f/assets/cozy/requires/fabric-api_vector.svg)
 
 The Chaotic Neutral mod that adds:
-- Omniscient blocks that actively want to harm you which can be harnessed to harm others
+- Omniscient blocks that actively want to harm but can be used to your advantage
 - Locks that can be used to protect your stuff but can also be bypassed in unique ways
 - Special items that are crafted in unique ways and can be utalized to cause absolute chaos
   
