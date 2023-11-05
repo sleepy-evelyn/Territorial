@@ -9,7 +9,7 @@ import io.github.sleepy_evelyn.territorial.Territorial;
 import io.github.sleepy_evelyn.territorial.api.registry.TerritorialRegistries;
 import net.minecraft.block.Blocks;
 
-public class TerritorialEmiPlugin implements EmiPlugin {
+public class TerritorialEmiProvider implements EmiPlugin {
 
 	private static final EmiTexture NETHER_PORTAL_EMI_TEXTURE = new EmiTexture(
 		Territorial.id("textures/gui/emi/mini_portal.png"),

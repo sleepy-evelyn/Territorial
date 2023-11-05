@@ -5,6 +5,7 @@ import io.github.sleepy_evelyn.territorial.api.component.BoundBlockEntity;
 import io.github.sleepy_evelyn.territorial.api.component.BoundBlockEntityParams;
 //import gay.sylv.territorial.api.component.IPeekingEyeComponent;
 import io.github.sleepy_evelyn.territorial.api.component.IPeekingEyeComponent;
+import io.github.sleepy_evelyn.territorial.config.TerritorialConfig;
 import io.github.sleepy_evelyn.territorial.init.TerritorialBlockEntities;
 import io.github.sleepy_evelyn.territorial.init.TerritorialBlocks;
 //import gay.sylv.territorial.component.TerritorialComponents;
@@ -133,7 +134,7 @@ public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBloc
     public BoundBlockEntityParams getParams() {
         if(world != null)
             return new BoundBlockEntityParams(world.getDimensionKey(), pos,
-                    Territorial.getConfig().getPlinthOfPeekingMinReach() * reachMultipliers[level]);
+                    TerritorialConfig.common().getPlinthOfPeekingMinReach() * reachMultipliers[level]);
         else return null;
     }
 

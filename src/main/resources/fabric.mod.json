@@ -4,16 +4,16 @@
   "version": "${version}",
 
   "name": "Territorial",
-  "description": "TODO",
+  "description": "The mod that brings chaos",
   "authors": [
-    "Lunathelemon"
+    "Sleepy Evelyn"
   ],
   "contact": {
     "homepage": "",
-    "sources": "https://github.com/lunathelemon/Territorial"
+    "sources": "https://github.com/sleepy-evelyn/Territorial"
   },
 
-  "license": "MIT",
+  "license": "Custom License (See LICENSE.md)",
   "icon": "assets/territorial/icon.png",
 
   "environment": "*",
@@ -25,7 +25,10 @@
       "io.github.sleepy_evelyn.territorial.TerritorialClient"
     ],
     "emi": [
-      "io.github.sleepy_evelyn.territorial.integration.emi.TerritorialEmiPlugin"
+      "io.github.sleepy_evelyn.territorial.integration.emi.TerritorialEmiProvider"
+    ],
+    "modmenu": [
+      "io.github.sleepy_evelyn.territorial.integration.modmenu.TerritorialModMenuProvider"
     ]
   },
   "mixins": [

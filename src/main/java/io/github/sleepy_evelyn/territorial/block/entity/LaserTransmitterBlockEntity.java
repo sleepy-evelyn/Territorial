@@ -1,6 +1,7 @@
 package io.github.sleepy_evelyn.territorial.block.entity;
 
 import io.github.sleepy_evelyn.territorial.Territorial;
+import io.github.sleepy_evelyn.territorial.config.TerritorialConfig;
 import io.github.sleepy_evelyn.territorial.init.TerritorialBlockEntities;
 import io.github.sleepy_evelyn.territorial.init.TerritorialBlocks;
 import io.github.sleepy_evelyn.territorial.init.TerritorialDamageSources;
@@ -59,7 +60,7 @@ public class LaserTransmitterBlockEntity extends BlockEntity {
     public LaserTransmitterBlockEntity(BlockPos pos, BlockState state) {
         super(TerritorialBlockEntities.LASER_BLOCK_ENTITY_TYPE, pos, state);
         prevPower = -1;
-        maxReach = Territorial.getConfig().getLaserTransmitterMaxReach();
+        maxReach = TerritorialConfig.common().getLaserTransmitterMaxReach();
         lightBlocksTicker = new TickCounter(6);
         mods.put("sparkle", false);
         mods.put("rainbow", false);
@@ -190,7 +191,7 @@ public class LaserTransmitterBlockEntity extends BlockEntity {
             int watchDistanceMaxReach = (watchDistance < 2) ? 16 : (watchDistance * 16) - 16;
 
             if (be.maxReach != watchDistanceMaxReach) {
-                be.maxReach = Math.min(watchDistanceMaxReach, Territorial.getConfig().getLaserTransmitterMaxReach());
+                be.maxReach = Math.min(watchDistanceMaxReach, TerritorialConfig.common().getLaserTransmitterMaxReach());
                 be.markDirty();
             }
         }
@@ -200,7 +201,7 @@ public class LaserTransmitterBlockEntity extends BlockEntity {
         Item armorItem;
         int numArmorPieces;
         boolean hasGoldHelmet;
-        boolean targetAllMobs = Territorial.getConfig().laserTargetsAllMobs();
+        boolean targetAllMobs = TerritorialConfig.common().laserTargetsAllMobs();
 
         for(var entity : entities) {
             if(targetAllMobs || entity.isPlayer()) {

@@ -33,7 +33,7 @@ public class PortalEmiRecipe extends TerritorialEmiRecipe {
     private final Identifier portalTextureId;
 
     public PortalEmiRecipe(FakePortalRecipe infusionRecipe) {
-        super(TerritorialEmiPlugin.PORTAL, ID, GROUP);
+        super(TerritorialEmiProvider.PORTAL, ID, GROUP);
         this.input = Arrays.stream(infusionRecipe.ingredients()).map(EmiIngredient::of).toList();
         this.output = Arrays.stream(infusionRecipe.output()).map(EmiStack::of).toList();
 

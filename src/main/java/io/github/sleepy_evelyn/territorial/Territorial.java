@@ -2,10 +2,11 @@ package io.github.sleepy_evelyn.territorial;
 
 import io.github.sleepy_evelyn.territorial.api.TerritorialAPI;
 import io.github.sleepy_evelyn.territorial.api.event.CorruptionEvents;
+import io.github.sleepy_evelyn.territorial.config.TerritorialConfig;
 import io.github.sleepy_evelyn.territorial.init.TerritorialBlocks;
 import io.github.sleepy_evelyn.territorial.block.entity.CorruptedBeaconBlockEntity;
 import io.github.sleepy_evelyn.territorial.init.TerritorialBlockEntities;
-import io.github.sleepy_evelyn.territorial.config.TerritorialConfig;
+import io.github.sleepy_evelyn.territorial.config.TerritorialConfigProvider;
 import io.github.sleepy_evelyn.territorial.init.TerritorialStatusEffects;
 import io.github.sleepy_evelyn.territorial.init.C2SPacketRegistry;
 import io.github.sleepy_evelyn.territorial.init.TerritorialItems;
@@ -25,22 +26,15 @@ public class Territorial implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		AutoConfig.register(TerritorialConfig.class, Toml4jConfigSerializer::new);
+		AutoConfig.register(TerritorialConfigProvider.class, Toml4jConfigSerializer::new);
 		TerritorialItems.initialize();
 		TerritorialBlocks.initialize();
 		TerritorialBlockEntities.initialize();
 		TerritorialRecipes.initialize();
 		TerritorialStatusEffects.initialize();
 
-		// Events
-		CorruptionEvents.BLOCK_CORRUPTED.register(CorruptedBeaconBlockEntity::onCorruptedBlock);
-
-		// Packets
-		C2SPacketRegistry.initialize();
-	}
-
-	public static TerritorialConfig getConfig() {
-		return AutoConfig.getConfigHolder(TerritorialConfig.class).getConfig();
+		CorruptionEvents.BLOCK_CORRUPTED.register(CorruptedBeaconBlockEntity::onCorruptedBlock); // Events
+		C2SPacketRegistry.initialize(); // Packets
 	}
 
 	public static Identifier id(String path) {

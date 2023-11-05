@@ -1,6 +1,7 @@
 package io.github.sleepy_evelyn.territorial.block;
 
 import io.github.sleepy_evelyn.territorial.Territorial;
+import io.github.sleepy_evelyn.territorial.config.TerritorialConfig;
 import io.github.sleepy_evelyn.territorial.util.TickCounter;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockState;
@@ -17,13 +18,13 @@ public class EclipseWitherRoseBlock extends WitherRoseBlock implements EclipseBl
     private final TickCounter DISPLAY_TICKER = new TickCounter(12);
 
     public EclipseWitherRoseBlock() {
-		super(StatusEffects.WITHER, FabricBlockSettings.create()
-			.noCollision()
-			.breakInstantly()
-			.nonOpaque()
-			.notSolid()
-			.sounds(BlockSoundGroup.GRASS)
-		);
+        super(StatusEffects.WITHER, FabricBlockSettings.create()
+                .noCollision()
+                .breakInstantly()
+                .nonOpaque()
+                .notSolid()
+                .sounds(BlockSoundGroup.GRASS)
+        );
     }
 
     @Override
@@ -35,7 +36,7 @@ public class EclipseWitherRoseBlock extends WitherRoseBlock implements EclipseBl
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
         super.randomDisplayTick(state, world, pos, random);
-        int maxReach = Territorial.getConfig().getEclipseRoseMaxReach();
+        int maxReach = TerritorialConfig.common().getEclipseRoseMaxReach();
         eclipseDisplayTick(state, world, pos, random, DISPLAY_TICKER, 600, maxReach);
     }
 }

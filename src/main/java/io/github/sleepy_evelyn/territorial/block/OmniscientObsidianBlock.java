@@ -1,6 +1,7 @@
 package io.github.sleepy_evelyn.territorial.block;
 
 import io.github.sleepy_evelyn.territorial.Territorial;
+import io.github.sleepy_evelyn.territorial.config.TerritorialConfig;
 import io.github.sleepy_evelyn.territorial.init.TerritorialDamageSources;
 import io.github.sleepy_evelyn.territorial.util.MovementUtils;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -57,7 +58,7 @@ public class OmniscientObsidianBlock extends CryingObsidianBlock implements Befo
 
 	@Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
-        if(Territorial.getConfig().omniscientObsidianSpread() && !world.isClient && random.nextDouble() < 0.0280D)
+        if(TerritorialConfig.common().omniscientObsidianSpread() && !world.isClient && random.nextDouble() < 0.0280D)
             tickSpread(state, world, pos, random);
     }
 

@@ -3,6 +3,7 @@ package io.github.sleepy_evelyn.territorial.init;
 import io.github.sleepy_evelyn.territorial.Territorial;
 import io.github.sleepy_evelyn.territorial.api.recipe.FakePortalRecipe;
 import io.github.sleepy_evelyn.territorial.api.registry.TerritorialRegistries;
+import io.github.sleepy_evelyn.territorial.config.TerritorialConfig;
 import io.github.sleepy_evelyn.territorial.recipe.ConditionalRecipes;
 import io.github.sleepy_evelyn.territorial.recipe.LensRecipe;
 import net.minecraft.block.Blocks;
@@ -30,7 +31,7 @@ public final class TerritorialRecipes {
 	);
 
     public static void initialize() {
-        if(Territorial.getConfig().omniscientObsidianRecipe())
+        if(TerritorialConfig.common().omniscientObsidianRecipe())
             register( "crafting_omniscient_obsidian", OMNISCIENT_OBSIDIAN_RECIPE_SERIALIZER);
     }
 

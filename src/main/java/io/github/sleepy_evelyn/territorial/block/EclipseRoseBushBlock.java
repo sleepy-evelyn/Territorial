@@ -1,6 +1,7 @@
 package io.github.sleepy_evelyn.territorial.block;
 
 import io.github.sleepy_evelyn.territorial.Territorial;
+import io.github.sleepy_evelyn.territorial.config.TerritorialConfig;
 import io.github.sleepy_evelyn.territorial.util.TickCounter;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.BlockState;
@@ -36,7 +37,7 @@ public class EclipseRoseBushBlock extends TallFlowerBlock implements EclipseBloc
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
         if(state.get(Properties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER) {
-            int maxReach = Territorial.getConfig().getEclipseRoseMaxReach();
+            int maxReach = TerritorialConfig.common().getEclipseRoseMaxReach();
             eclipseDisplayTick(state, world, pos, random, DISPLAY_TICKER, 300, maxReach);
         }
     }
