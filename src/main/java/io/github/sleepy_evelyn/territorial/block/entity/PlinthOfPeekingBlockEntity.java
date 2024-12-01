@@ -4,12 +4,10 @@ import io.github.sleepy_evelyn.territorial.Territorial;
 import io.github.sleepy_evelyn.territorial.api.component.BoundBlockEntity;
 import io.github.sleepy_evelyn.territorial.api.component.BoundBlockEntityParams;
 //import gay.sylv.territorial.api.component.IPeekingEyeComponent;
-import io.github.sleepy_evelyn.territorial.api.component.IPeekingEyeComponent;
 import io.github.sleepy_evelyn.territorial.config.TerritorialConfig;
 import io.github.sleepy_evelyn.territorial.init.TerritorialBlockEntities;
 import io.github.sleepy_evelyn.territorial.init.TerritorialBlocks;
 //import gay.sylv.territorial.component.TerritorialComponents;
-import io.github.sleepy_evelyn.territorial.component.TerritorialComponents;
 import io.github.sleepy_evelyn.territorial.util.BeaconUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -134,11 +132,12 @@ public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBloc
     public BoundBlockEntityParams getParams() {
         if(world != null)
             return new BoundBlockEntityParams(world.getDimensionKey(), pos,
-                    TerritorialConfig.common().getPlinthOfPeekingMinReach() * reachMultipliers[level]);
+                    6 * reachMultipliers[level]);
         else return null;
     }
 
 
+    /**
     private List<IPeekingEyeComponent> getBoundPlayerComponents() {
         List<IPeekingEyeComponent> components = new ArrayList<>();
 
@@ -150,6 +149,6 @@ public class PlinthOfPeekingBlockEntity extends BlockEntity implements BoundBloc
             }
         }
         return components;
-    }
+    }**/
 
 }

@@ -1,5 +1,6 @@
 package io.github.sleepy_evelyn.territorial.component;
 
+/**
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
@@ -18,5 +19,5 @@ public class TerritorialComponents implements EntityComponentInitializer {
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(PEEKING_EYE, PeekingEyeComponent::new, RespawnCopyStrategy.NEVER_COPY);
     }
-}
+}**/
 

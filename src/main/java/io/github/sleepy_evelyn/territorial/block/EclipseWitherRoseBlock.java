@@ -36,7 +36,7 @@ public class EclipseWitherRoseBlock extends WitherRoseBlock implements EclipseBl
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
         super.randomDisplayTick(state, world, pos, random);
-        int maxReach = TerritorialConfig.common().getEclipseRoseMaxReach();
+        int maxReach = 16;
         eclipseDisplayTick(state, world, pos, random, DISPLAY_TICKER, 600, maxReach);
     }
 }

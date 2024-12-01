@@ -37,7 +37,7 @@ public class EclipseRoseBushBlock extends TallFlowerBlock implements EclipseBloc
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, RandomGenerator random) {
         if(state.get(Properties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER) {
-            int maxReach = TerritorialConfig.common().getEclipseRoseMaxReach();
+            int maxReach = 16;
             eclipseDisplayTick(state, world, pos, random, DISPLAY_TICKER, 300, maxReach);
         }
     }

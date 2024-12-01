@@ -31,7 +31,7 @@ public final class TerritorialRecipes {
 	);
 
     public static void initialize() {
-        if(TerritorialConfig.common().omniscientObsidianRecipe())
+        //if(TerritorialConfig.common().omniscientObsidianRecipe())
             register( "crafting_omniscient_obsidian", OMNISCIENT_OBSIDIAN_RECIPE_SERIALIZER);
     }
 

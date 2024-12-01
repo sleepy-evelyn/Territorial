@@ -58,7 +58,7 @@ public class OmniscientObsidianBlock extends CryingObsidianBlock implements Befo
 
 	@Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
-        if(TerritorialConfig.common().omniscientObsidianSpread() && !world.isClient && random.nextDouble() < 0.0280D)
+        if(!world.isClient && random.nextDouble() < 0.0280D)
             tickSpread(state, world, pos, random);
     }
 

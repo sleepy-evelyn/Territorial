@@ -1,5 +1,0 @@
-accessWidener   v1  named
-
-# Renderlayer access wideners
-accessible  class   net/minecraft/client/render/RenderLayer$MultiPhase
-accessible  method  net/minecraft/client/render/RenderLayer$MultiPhase <init> (Ljava/lang/String;Lcom/mojang/blaze3d/vertex/VertexFormat;Lcom/mojang/blaze3d/vertex/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)V

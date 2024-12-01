@@ -27,11 +27,4 @@ public final class TerritorialConfig {
         TerritorialConfig.clientConfig = clientConfig;
     }
 
-    public static ConfigAccess common() {
-        return config;
-    }
-
-    public static ClientConfigAccess client() {
-        return clientConfig;
-    }
 }

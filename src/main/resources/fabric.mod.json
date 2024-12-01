@@ -26,9 +26,6 @@
     ],
     "emi": [
       "io.github.sleepy_evelyn.territorial.integration.emi.TerritorialEmiProvider"
-    ],
-    "modmenu": [
-      "io.github.sleepy_evelyn.territorial.integration.modmenu.TerritorialModMenuProvider"
     ]
   },
   "mixins": [

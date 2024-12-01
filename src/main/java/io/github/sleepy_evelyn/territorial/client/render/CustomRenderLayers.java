@@ -1,5 +1,6 @@
 package io.github.sleepy_evelyn.territorial.client.render;
 
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
 import net.minecraft.client.render.RenderLayer;
@@ -11,7 +12,7 @@ public class CustomRenderLayers extends RenderLayer {
         super(nameIn, formatIn, drawModeIn, bufferSizeIn, useDelegateIn, needsSortingIn, setupTaskIn, clearTaskIn);
     }
 
-    public static final RenderLayer QUAD_LINES = new MultiPhase("territorial_quad_lines",
+    public static final RenderLayer QUAD_LINES = CustomRenderLayers.of("territorial_quad_lines",
             VertexFormats.POSITION_COLOR, VertexFormat.DrawMode.QUADS , 256, false, false,
             MultiPhaseParameters.builder()
                     .layering(VIEW_OFFSET_Z_LAYERING)

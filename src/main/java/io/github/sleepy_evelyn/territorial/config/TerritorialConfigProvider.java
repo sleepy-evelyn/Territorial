@@ -1,6 +1,7 @@
 package io.github.sleepy_evelyn.territorial.config;
 
 import io.github.sleepy_evelyn.territorial.api.TerritorialAPI;
+/**
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
@@ -97,3 +98,4 @@ public class TerritorialConfigProvider implements ConfigData, ConfigAccess, Clie
         return (int) constrainValue(tweaks.laserTransmitterMaxReach, LTMR_MIN, LTMR_MAX);
     }
 }
+ **/
