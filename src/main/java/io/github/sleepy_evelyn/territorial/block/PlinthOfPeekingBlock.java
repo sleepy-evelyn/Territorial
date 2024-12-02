@@ -1,6 +1,7 @@
 package io.github.sleepy_evelyn.territorial.block;
 
 import io.github.sleepy_evelyn.territorial.block.entity.PlinthOfPeekingBlockEntity;
+import io.github.sleepy_evelyn.territorial.component.TerritorialComponents;
 import io.github.sleepy_evelyn.territorial.init.TerritorialBlockEntities;
 //import gay.sylv.territorial.component.TerritorialComponents;
 import io.github.sleepy_evelyn.territorial.util.NetworkingUtils;
@@ -56,7 +57,7 @@ public class PlinthOfPeekingBlock extends BlockWithEntity {
 
         if(be instanceof PlinthOfPeekingBlockEntity ppbe && !world.isClient) {
             boolean hasEmptyPodium = ppbe.getPodiumEye() == Items.AIR;
-            //var peekingComponent = player.getComponent(TerritorialComponents.PEEKING_EYE);
+            var peekingComponent = player.getComponent(TerritorialComponents.PEEKING_EYE);
 
             if(hasEmptyPodium) {
                 if(mainHandStack.getItem() instanceof EnderEyeItem enderEyeItem) {
@@ -68,10 +69,10 @@ public class PlinthOfPeekingBlock extends BlockWithEntity {
                 if(player.isSneaking()) {
                     dropStack(world, pos.up(), ppbe.getPodiumEye().getDefaultStack());
                     ppbe.setPodiumEye(Items.AIR);
-                } /* else if(!peekingComponent.isPeeking()) {
+                } else if(!peekingComponent.isPeeking()) {
                     ppbe.setPodiumEye(Items.AIR);
                     peekingComponent.startPeeking(ppbe);
-                }*/
+                }
             }
             NetworkingUtils.markDirtyAndSync(be, world);
         }

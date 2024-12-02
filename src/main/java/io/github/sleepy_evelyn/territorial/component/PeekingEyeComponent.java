@@ -2,6 +2,7 @@ package io.github.sleepy_evelyn.territorial.component;
 
 import io.github.sleepy_evelyn.territorial.api.component.BoundBlockEntity;
 import io.github.sleepy_evelyn.territorial.api.component.BoundBlockEntityParams;
+import io.github.sleepy_evelyn.territorial.api.component.IPeekingEyeComponent;
 import io.github.sleepy_evelyn.territorial.client.sound.PeekingSoundInstance;
 import io.github.sleepy_evelyn.territorial.init.TerritorialDamageSources;
 import io.github.sleepy_evelyn.territorial.util.NetworkingUtils;
@@ -24,7 +25,7 @@ import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.dimension.DimensionType;
 import org.jetbrains.annotations.Nullable;
 
-/**
+
 public class PeekingEyeComponent implements IPeekingEyeComponent {
 
     private boolean isPeeking;
@@ -202,4 +203,4 @@ public class PeekingEyeComponent implements IPeekingEyeComponent {
         }
         return null;
     }
-}**/
+}

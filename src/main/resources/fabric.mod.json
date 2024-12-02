@@ -26,6 +26,9 @@
     ],
     "emi": [
       "io.github.sleepy_evelyn.territorial.integration.emi.TerritorialEmiProvider"
+    ],
+    "cardinal-components": [
+      "io.github.sleepy_evelyn.territorial.component.TerritorialComponents"
     ]
   },
   "mixins": [

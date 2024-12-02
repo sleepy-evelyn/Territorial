@@ -1,12 +1,16 @@
 package io.github.sleepy_evelyn.territorial.client.render.entity;
 
+import io.github.sleepy_evelyn.territorial.Territorial;
+import io.github.sleepy_evelyn.territorial.component.TerritorialComponents;
 import io.github.sleepy_evelyn.territorial.event.template.RenderEvents;
+import io.github.sleepy_evelyn.territorial.networking.c2s.CancelPeekingPacket;
 import io.github.sleepy_evelyn.territorial.util.MovementUtils;
 import io.github.sleepy_evelyn.territorial.util.RenderUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
@@ -16,7 +20,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Axis;
+
+import java.io.IOException;
 
 public class PeekingEyeRenderer {
 
@@ -33,8 +40,6 @@ public class PeekingEyeRenderer {
     private static void renderShaderOverlay(WorldRenderContext context) {
         var player = MinecraftClient.getInstance().player;
         if(player != null) {
-            /*
-
 			var peekingCapability = player.getComponent(TerritorialComponents.PEEKING_EYE);
             if(peekingCapability.isPeeking()) {
                 if(!RenderUtils.Shader.isLoaded()) {
@@ -44,38 +49,31 @@ public class PeekingEyeRenderer {
                 }
                 RenderUtils.Shader.render(context.tickDelta());
             }
-            */
         }
     }
 
     private static void handleExitTick(ClientWorld world) {
         var player = MinecraftClient.getInstance().player;
         if(player != null) {
-			/*
-
             var peekingComponent = player.getComponent(TerritorialComponents.PEEKING_EYE);
             if(peekingComponent.isPeeking()) {
                 if(Screen.hasAltDown()) {
                     RenderUtils.Shader.close();
                     new CancelPeekingPacket().send();
                 }
-                if(peekingComponent.getTicksPeeking() < exitMessageTickDuration)
+                if(peekingComponent.getTicksPeeking() < EXIT_MESSAGE_TICK_DURATION)
                     player.sendMessage(Text.translatable("text.territorial.overlay.exit_peeking_mode"), true);
             }
-            */
         }
     }
 
     private static boolean beforeRenderPlayer(AbstractClientPlayerEntity player, MatrixStack matrices, VertexConsumerProvider vertexConsumer, float tickDelta, int light) {
-       /*
         var peekingComponent = player.getComponent(TerritorialComponents.PEEKING_EYE);
         if(peekingComponent.isPeeking()) {
             render(player, matrices, vertexConsumer, tickDelta, light);
             return true;
         } else
             return false;
-        */
-		return false;
     }
 
     private static boolean beforeRenderPlayerArms(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity player, ModelPart arm, ModelPart sleeve) {

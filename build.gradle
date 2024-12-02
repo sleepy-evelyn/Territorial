@@ -38,8 +38,12 @@ dependencies {
 	modCompileOnly "com.terraformersmc:modmenu:$project.modmenu_version"
 
 	// Cardinal Components
-	/**modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:$project.cardinal_components"))
-	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:$project.cardinal_components"))**/
+	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:$project.cardinal_components"))
+	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:$project.cardinal_components"))
+
+	include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_components}"
+	include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_components}"
+
 	// EMI
 	modCompileOnly "dev.emi:emi-fabric:$emi_version:api"
 	modLocalRuntime "dev.emi:emi-fabric:$emi_version"
