@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cross",
-  "textures": {
-    "cross": "territorial:block/eclipse_rose_bush_bottom"
-  }
-}
